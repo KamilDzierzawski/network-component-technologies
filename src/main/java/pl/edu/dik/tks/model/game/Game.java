@@ -1,15 +1,31 @@
 package pl.edu.dik.tks.model.game;
 
-public abstract class Game extends AbstractEntity {
-    @Getter @Setter
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import pl.edu.dik.tks.model.UuidIdentifiedEntity;
+
+import java.util.UUID;
+
+@Getter
+@ToString(callSuper = true)
+public abstract class Game extends UuidIdentifiedEntity {
+    @Setter
     private String name;
 
-    @Getter
     private final GameType type;
 
-    @Getter @Setter
+    @Setter
     private int pricePerDay;
 
-    @Getter @Setter
+    @Setter
     private int rentalStatusCount;
+
+    public Game(UUID id, String name, GameType type, int pricePerDay, int rentalStatusCount) {
+        super(id);
+        this.name = name;
+        this.type = type;
+        this.pricePerDay = pricePerDay;
+        this.rentalStatusCount = rentalStatusCount;
+    }
 }
