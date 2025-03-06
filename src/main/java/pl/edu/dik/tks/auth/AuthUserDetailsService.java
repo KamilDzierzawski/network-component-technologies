@@ -15,17 +15,13 @@ public class AuthUserDetailsService implements UserDetailsService {
 
     @Override
     public AuthUserDetails loadUserByUsername(String username) {
-        log.debug("Attempting to load user with username: {}", username);
-
         try {
             Account account = authRepository.findByLogin(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-            log.debug("Found account: {}", account.getLogin());
             return new AuthUserDetails(account);
 
         } catch (Exception e) {
-            log.error("Error loading user {}: {}", username, e.getMessage());
             throw e;
         }
     }

@@ -16,7 +16,7 @@ import java.util.UUID;
 @SpringBootApplication
 public class TksApplication {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws DuplicatedKeyException, DatabaseException {
 		SpringApplication.run(TksApplication.class, args);
 
 //		ConfigurableApplicationContext context = SpringApplication.run(TksApplication.class, args);
@@ -29,9 +29,9 @@ public class TksApplication {
 //		String dbName = context.getBean("mongoDatabaseName", String.class);
 //
 //		AuthRepository authRepository = context.getBean("authRepository", AuthRepository.class);
-//		AuthService authService = new AuthService(authRepository);
+//		AuthService authService = new AuthService(authRepository, context.getBean("passwordEncoder", org.springframework.security.crypto.password.PasswordEncoder.class));
 //
-//		Account account = new Account(UUID.randomUUID(), "Maciek", "Kowalski", Role.ADMIN, true, "123", "eloo");
+//		Account account = new Account(UUID.randomUUID(), "Maciek", "Kowalski", Role.ADMIN, true, "EloElo123", "eloo123");
 //
 //		authService.register(account);
 //
