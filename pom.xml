@@ -85,6 +85,14 @@
 			<version>3.1.0</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+
+
 		<!--        MapStruct (DTO mapper) -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
