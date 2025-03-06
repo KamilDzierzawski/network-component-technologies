@@ -32,4 +32,11 @@ public class AppExceptionHandler {
         response.put("message", e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Map<String, Object>>  handleNotFoundException(NotFoundException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 }

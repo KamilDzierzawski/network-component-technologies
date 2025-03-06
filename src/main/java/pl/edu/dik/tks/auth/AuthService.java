@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.tks.exception.DatabaseException;
+import pl.edu.dik.tks.exception.auth.AccountNotFoundException;
 import pl.edu.dik.tks.exception.auth.DuplicatedKeyException;
 import pl.edu.dik.tks.model.account.Account;
 import pl.edu.dik.tks.model.account.Role;
@@ -24,15 +25,21 @@ public class AuthService {
             DuplicatedKeyException,
             DatabaseException {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setEnable(true);
         account.setRole(Role.CLIENT);
         try {
             authRepository.insert(account);
         } catch (MongoWriteException e) {
             if (e.getError().getCode() == 11000) {
-                throw new DuplicatedKeyException("Account with this email already exists");
+                throw new DuplicatedKeyException("Account with this login already exists");
             } else {
                 throw new DatabaseException("Database error");
             }
         }
+    }
+
+    public Account me(String login) throws
+            AccountNotFoundException {
+        return authRepository.findByLogin(login).orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
 }

@@ -16,11 +16,7 @@ import java.util.UUID;
 @ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account /*extends UuidIdentifiedEntity*/ { //extends AbstractEntity
-
-    @BsonId
-    @EqualsAndHashCode.Include
-    private UUID id;
+public class Account extends UuidIdentifiedEntity { //extends AbstractEntity
 
     @BsonProperty("first_name")
     private String firstName;

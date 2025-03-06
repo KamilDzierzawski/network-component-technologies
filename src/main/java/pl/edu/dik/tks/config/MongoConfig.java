@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.UUID;
+
 import static com.mongodb.MongoClientSettings.getDefaultCodecRegistry;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
@@ -43,6 +45,7 @@ public class MongoConfig {
     @Bean(destroyMethod = "close")
     public MongoClient mongoConnection() {
         CodecProvider pojoCodecProvider = PojoCodecProvider.builder()
+                .register(UUID.class)
                 .automatic(true)
                 .build();
 

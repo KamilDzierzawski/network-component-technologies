@@ -1,33 +1,27 @@
 package pl.edu.dik.tks.model.game;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.bson.codecs.pojo.annotations.BsonDiscriminator;
+import lombok.*;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import pl.edu.dik.tks.model.UuidIdentifiedEntity;
 
-import java.util.UUID;
-
-@Getter
+@Getter @Setter
 @ToString(callSuper = true)
-@BsonDiscriminator(key = "type")
-public abstract class Game extends UuidIdentifiedEntity {
-    @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Game extends UuidIdentifiedEntity {
+
+    @BsonProperty("name")
     private String name;
 
-    //private final GameType type;
-
-    @Setter
+    @BsonProperty("price_per_day")
     private int pricePerDay;
 
-    @Setter
+    @BsonProperty("rental_status_count")
     private int rentalStatusCount;
 
-    public Game(UUID id, String name, /*GameType type,*/ int pricePerDay, int rentalStatusCount) {
-        super(id);
-        this.name = name;
-        //this.type = type;
-        this.pricePerDay = pricePerDay;
-        this.rentalStatusCount = rentalStatusCount;
-    }
+    @BsonProperty("min_players")
+    private int minPlayers;
+
+    @BsonProperty("max_players")
+    private int maxPlayers;
 }

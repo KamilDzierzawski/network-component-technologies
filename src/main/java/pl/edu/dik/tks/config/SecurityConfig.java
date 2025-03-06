@@ -66,6 +66,9 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
+
+                                .requestMatchers(HttpMethod.POST, "/api/games/create").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

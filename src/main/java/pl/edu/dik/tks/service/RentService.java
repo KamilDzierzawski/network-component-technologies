@@ -2,7 +2,6 @@ package pl.edu.dik.tks.service;
 
 import pl.edu.dik.tks.exception.business.AccountNotActiveException;
 import pl.edu.dik.tks.exception.business.StartDateBeforeEndDateException;
-import pl.edu.dik.tks.model.game.BoardGame;
 import pl.edu.dik.tks.model.rent.Rent;
 
 import java.util.UUID;

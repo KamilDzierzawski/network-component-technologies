@@ -31,22 +31,5 @@ public class AuthUserDetails implements UserDetails {
     public boolean isEnabled() {
         return account.isEnable();
     }
-
-    // Unused methods
-    //    @Override
-    //    public boolean isAccountNonExpired() {
-    //        return true;
-    //    }
-    //
-    //    @Override
-    //    public boolean isAccountNonLocked() {
-    //        return true;
-    //    }
-    //
-    //    @Override
-    //    public boolean isCredentialsNonExpired() {
-    //        return true;
-    //    }
-
 }
 
