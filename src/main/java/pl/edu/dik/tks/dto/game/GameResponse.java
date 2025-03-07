@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Data
 public class GameResponse {
-    private UUID id;
+    private String id;
     private String name;
     private int pricePerDay;
     private int minPlayers;

@@ -2,7 +2,6 @@ package pl.edu.dik.tks.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.edu.dik.tks.exception.DatabaseException;
 import pl.edu.dik.tks.exception.auth.AccountNotFoundException;
 import pl.edu.dik.tks.model.account.Account;
 import pl.edu.dik.tks.repository.account.AccountRepository;
@@ -21,32 +20,26 @@ public class AccountService {
         return accountRepository.findById(id).orElse(null);
     }
 
-    public List<Account> findAllAccounts() throws DatabaseException {
-        try {
-            return accountRepository.findAll();
-        } catch (Exception e) {
-            throw new DatabaseException("Database error");
-        }
+    public List<Account> findAllAccounts() {
+
+        return accountRepository.findAll();
+
     }
 
-    public Account updateAccount(Account account) throws DatabaseException, AccountNotFoundException {
-        try {
-            Account foundAccount = accountRepository.findById(account.getId())
-                    .orElseThrow(() -> new AccountNotFoundException("Account with ID " + account.getId() + " not found"));
+    public Account updateAccount(Account account) throws AccountNotFoundException {
 
-            if (!account.getLogin().equals(foundAccount.getLogin())) {
-                foundAccount.setLogin(account.getLogin());
-            }
-            if (!account.getPassword().equals(foundAccount.getPassword())) {
-                foundAccount.setPassword(account.getPassword());
-            }
+        Account foundAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new AccountNotFoundException("Account with ID " + account.getId() + " not found"));
 
-            return accountRepository.update(foundAccount);
-        } catch (AccountNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new DatabaseException("Database error");
+        if (!account.getLogin().equals(foundAccount.getLogin())) {
+            foundAccount.setLogin(account.getLogin());
         }
+        if (!account.getPassword().equals(foundAccount.getPassword())) {
+            foundAccount.setPassword(account.getPassword());
+        }
+
+        return accountRepository.update(foundAccount);
+
     }
 
     //TODO: CHYBA NIE MOZNA USUWAC KONTA Z WYPOZYCZENIAMI

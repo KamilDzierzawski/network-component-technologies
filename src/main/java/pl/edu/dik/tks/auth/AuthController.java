@@ -4,19 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
-import pl.edu.dik.tks.auth.dto.AccountResponse;
-import pl.edu.dik.tks.auth.dto.LoginRequest;
-import pl.edu.dik.tks.auth.dto.RegisterRequest;
-import pl.edu.dik.tks.auth.dto.RegisterResponse;
-import pl.edu.dik.tks.exception.DatabaseException;
+import pl.edu.dik.tks.auth.dto.*;
 import pl.edu.dik.tks.exception.auth.AccountNotFoundException;
 import pl.edu.dik.tks.exception.auth.DuplicatedKeyException;
+import pl.edu.dik.tks.exception.auth.IncorrectPasswordException;
 import pl.edu.dik.tks.model.account.Account;
 
 @RestController
@@ -31,8 +27,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) throws
-            DuplicatedKeyException,
-            DatabaseException {
+            DuplicatedKeyException {
         Account account = modelMapper.map(registerRequest, Account.class);
         return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(authService.register(account), RegisterResponse.class));
     }
@@ -55,5 +50,13 @@ public class AuthController {
                                 SecurityContextHolder.getContext().getAuthentication().getName()),
                         AccountResponse.class));
 
+    }
+
+    @PatchMapping("/reset-password")
+    public ResponseEntity<ResetPasswordResponse> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws
+            AccountNotFoundException,
+            IncorrectPasswordException {
+        String message = authService.resetPassword(SecurityContextHolder.getContext().getAuthentication().getName(), resetPasswordRequest.getCurrentPassword(), resetPasswordRequest.getNewPassword());
+        return ResponseEntity.ok(new ResetPasswordResponse(message));
     }
 }

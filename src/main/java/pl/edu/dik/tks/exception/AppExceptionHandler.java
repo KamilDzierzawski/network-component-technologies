@@ -11,14 +11,6 @@ import java.util.Map;
 @ControllerAdvice
 public class AppExceptionHandler {
 
-    @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<Map<String, Object>>  handleDatabaseException(DatabaseException e) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", e.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-
-    }
-
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Map<String, Object>>  handleConflictException(ConflictException e) {
         Map<String, Object> response = new HashMap<>();

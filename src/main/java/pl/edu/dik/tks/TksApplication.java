@@ -2,21 +2,12 @@ package pl.edu.dik.tks;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import pl.edu.dik.tks.auth.AuthRepository;
-import pl.edu.dik.tks.auth.AuthService;
-import pl.edu.dik.tks.config.SecurityConfig;
-import pl.edu.dik.tks.exception.DatabaseException;
 import pl.edu.dik.tks.exception.auth.DuplicatedKeyException;
-import pl.edu.dik.tks.model.account.Account;
-import pl.edu.dik.tks.model.account.Role;
-
-import java.util.UUID;
 
 @SpringBootApplication
 public class TksApplication {
 
-	public static void main(String[] args) throws DuplicatedKeyException, DatabaseException {
+	public static void main(String[] args) throws DuplicatedKeyException{
 		SpringApplication.run(TksApplication.class, args);
 
 //		ConfigurableApplicationContext context = SpringApplication.run(TksApplication.class, args);

@@ -67,8 +67,11 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
+                                .requestMatchers(HttpMethod.PATCH, "/api/auth/reset-password").authenticated()
 
-//                                .requestMatchers(HttpMethod.POST, "/api/games/create").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
+                                .requestMatchers(HttpMethod.POST, "/api/games/create").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
+                                .requestMatchers(HttpMethod.GET, "/api/games/{id}").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
+                                .requestMatchers(HttpMethod.PUT, "/api/games").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
