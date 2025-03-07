@@ -24,6 +24,7 @@ public class AuthRepository {
         ensureUniqueIndex();
     }
 
+    // TODO: Czy nie powinno zwracac obirktu a nie void?
     public void insert(Account object) {
         object.setId(UUID.randomUUID());
         collection.insertOne(object);

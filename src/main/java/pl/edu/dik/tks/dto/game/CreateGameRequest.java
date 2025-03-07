@@ -1,4 +1,4 @@
-package pl.edu.dik.tks.dto;
+package pl.edu.dik.tks.dto.game;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

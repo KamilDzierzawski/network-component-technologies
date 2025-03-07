@@ -4,20 +4,19 @@ import com.mongodb.MongoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.tks.exception.DatabaseException;
-import pl.edu.dik.tks.exception.NotFoundException;
 import pl.edu.dik.tks.exception.business.GameNotFoundException;
 import pl.edu.dik.tks.model.game.Game;
-import pl.edu.dik.tks.repository.game.GameRepository;
+import pl.edu.dik.tks.repository.game.MongoGameRepository;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class GameService {
-    private final GameRepository gameRepository;
+    private final MongoGameRepository gameRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository) {
+    public GameService(MongoGameRepository gameRepository) {
         this.gameRepository = gameRepository;
     }
 
@@ -56,11 +55,7 @@ public class GameService {
                 foundGame.setPricePerDay(game.getPricePerDay());
             }
 
-            if (gameRepository.update(foundGame)) {
-                return foundGame;
-            } else {
-                throw new DatabaseException("Database error");
-            }
+            return gameRepository.update(foundGame);
         } catch (GameNotFoundException e) {
             throw e;
         } catch (Exception e) {

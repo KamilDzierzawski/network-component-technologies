@@ -1,7 +1,6 @@
 package pl.edu.dik.tks.model.rent;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import pl.edu.dik.tks.model.UuidIdentifiedEntity;
 import pl.edu.dik.tks.model.game.Game;
 import pl.edu.dik.tks.model.account.Account;
@@ -9,8 +8,10 @@ import pl.edu.dik.tks.model.account.Account;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Setter
-@Getter
+@Getter @Setter
+@ToString(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Rent extends UuidIdentifiedEntity {
     private LocalDate startDate;
 
