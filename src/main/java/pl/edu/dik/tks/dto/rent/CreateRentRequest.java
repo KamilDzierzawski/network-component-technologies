@@ -15,9 +15,6 @@ public class CreateRentRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    @NotNull(message = "Client ID is required")
-    private String login;
-
     @NotNull(message = "Game ID is required")
     private ObjectId gameId;
 }

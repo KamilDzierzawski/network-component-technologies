@@ -1,5 +1,6 @@
 package pl.edu.dik.tks.repository.rent;
 
+import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -28,7 +29,16 @@ public class MongoRentRepository implements RentRepository {
 
     @Override
     public Rent save(Rent rent) {
-        collection.insertOne(rent);
+//        try (ClientSession session = ) {
+//            session.startTransaction();
+//
+//
+//            collection.insertOne(session, rent);
+//            session.commitTransaction();
+//
+//        }
+//
+//        collection.insertOne(rent);
         return rent;
     }
 

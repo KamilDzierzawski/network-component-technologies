@@ -13,4 +13,6 @@ public class AccountResponse {
     private String firstName;
     private String lastName;
     private String login;
+    private int rentalCount;
+    private boolean isEnable;
 }

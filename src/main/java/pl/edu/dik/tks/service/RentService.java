@@ -1,64 +1,28 @@
 package pl.edu.dik.tks.service;
 
 import com.mongodb.client.ClientSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import pl.edu.dik.tks.exception.business.AccountNotActiveException;
 import pl.edu.dik.tks.exception.business.StartDateBeforeEndDateException;
 import pl.edu.dik.tks.model.rent.Rent;
+import pl.edu.dik.tks.repository.rent.MongoRentRepository;
+import pl.edu.dik.tks.repository.rent.RentRepository;
 
 import java.util.UUID;
 
+@Service
+@RequiredArgsConstructor
 public class RentService {
 
-//    public Rent createRent(Rent rent) {
-//        try (ClientSession session = mongoClient.startSession()) {
-//            session.startTransaction();
-//
-//            if (!isStartDateBeforeEndDate(rent.getStartDate(), rent.getEndDate())) {
-//                throw new LogicException("Start date must be before end date.");
-//            }
-//
-//            if (!rent.getUser().isActive()) {
-//                throw new LogicException("Client is not active.");
-//            }
-//
-//            // Validate client
-//            if (!clientRepository.markAsRented(session, rent.getUser().getId())) {
-//                session.abortTransaction();
-//                throw new LogicException("Client is not available for rent or does not exist.");
-//            }
-//
-//            // Validate game
-//            boolean gameMarkedAsRented = false;
-//            if (rent.getGame() instanceof BoardGame) {
-//                gameMarkedAsRented = boardGameRepository.markAsRented(session, rent.getGame().getId());
-//            } else if (rent.getGame() instanceof ComputerGame) {
-//                gameMarkedAsRented = computerGameRepository.markAsRented(session, rent.getGame().getId());
-//            } else {
-//                session.abortTransaction();
-//                throw new LogicException("Unsupported game type: " + rent.getGame().getClass().getSimpleName());
-//            }
-//
-//            if (!gameMarkedAsRented) {
-//                session.abortTransaction();
-//                throw new LogicException("Game is not available for rent.");
-//            }
-//
-//            // Calculate rent price
-//            rent.setRentalPrice(calculateRentPrice(rent.getStartDate(), rent.getEndDate(), rent.getGame().getPricePerDay()));
-//
-//            if (rentRepository.insert(session, rent)) {
-//                session.commitTransaction();
-//                return rent;
-//            }
-//
-//            session.abortTransaction();
-//            throw new LogicException("Rent could not be created.");
-//        } catch (LogicException e) {
-//            throw e;
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//
-//            throw new DatabaseException("Database error. + " + e.getMessage());
-//        }
-//    }
+    private final MongoRentRepository mongoRentRepository;
+
+    public Rent createRent(Rent rent) throws StartDateBeforeEndDateException {
+
+        if (rent.getStartDate().isBefore(rent.getEndDate())) {
+            throw new StartDateBeforeEndDateException("Start date must be before end date.");
+        }
+
+        return mongoRentRepository.save(rent);
+    }
 }

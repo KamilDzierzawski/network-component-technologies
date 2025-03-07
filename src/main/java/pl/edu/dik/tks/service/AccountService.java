@@ -1,5 +1,7 @@
 package pl.edu.dik.tks.service;
 
+import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.tks.exception.auth.AccountNotFoundException;
@@ -7,43 +9,46 @@ import pl.edu.dik.tks.model.account.Account;
 import pl.edu.dik.tks.repository.account.AccountRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AccountService {
     private final AccountRepository accountRepository;
-    @Autowired
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
 
-    public Account findAccountById(Object id) {
-        return accountRepository.findById(id).orElse(null);
+    public Account findAccountById(Object id) throws AccountNotFoundException {
+        return accountRepository.findById(id).orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " not found"));
     }
 
     public List<Account> findAllAccounts() {
-
         return accountRepository.findAll();
-
     }
 
     public Account updateAccount(Account account) throws AccountNotFoundException {
-
         Account foundAccount = accountRepository.findById(account.getId())
                 .orElseThrow(() -> new AccountNotFoundException("Account with ID " + account.getId() + " not found"));
-
         if (!account.getLogin().equals(foundAccount.getLogin())) {
             foundAccount.setLogin(account.getLogin());
         }
         if (!account.getPassword().equals(foundAccount.getPassword())) {
             foundAccount.setPassword(account.getPassword());
         }
-
         return accountRepository.update(foundAccount);
+    }
+
+    public Account findByLogin(String login) throws AccountNotFoundException {
+            return accountRepository.findByLogin(login)
+                    .orElseThrow(() -> new AccountNotFoundException("Account with login " + login + " not found"));
 
     }
 
-    //TODO: CHYBA NIE MOZNA USUWAC KONTA Z WYPOZYCZENIAMI
-    public void deleteAccountById(Object id) {
-        accountRepository.deleteById(id);
+    public List<Account> findByMatchingLogin(String regex) {
+        return accountRepository.findByMatchingLogin(regex);
+    }
+
+    public Account toggleUserActiveStatus(ObjectId id, boolean isActive) throws AccountNotFoundException {
+        Account account = findAccountById(id);
+        account.setEnable(isActive);
+        return accountRepository.update(account);
     }
 }

@@ -36,4 +36,7 @@ public class Account extends UuidIdentifiedEntity { //extends AbstractEntity
     @BsonProperty("password")
     private String password;
 
+    @BsonProperty("rental_count")
+    private int rentalCount;
+
 }

@@ -75,6 +75,12 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/games").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.DELETE, "/api/games/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
 
+                                .requestMatchers(HttpMethod.GET, "/api/accounts").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
+                                .requestMatchers(HttpMethod.GET, "/api/accounts/{id}").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
+                                .requestMatchers(HttpMethod.GET, "/api/accounts/by-login").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
+                                .requestMatchers(HttpMethod.GET, "/api/accounts/search").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
+                                .requestMatchers(HttpMethod.PATCH, "/api/accounts/{id}/toggle-status").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
+
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

@@ -11,8 +11,10 @@ public interface AccountRepository {
 
     Account update(Account updatedAccount);
 
-    void deleteById(Object id);
-
     List<Account> findAll();
+
+    Optional<Account> findByLogin(String login);
+
+    List<Account> findByMatchingLogin(String loginSubstring);
 }
 
