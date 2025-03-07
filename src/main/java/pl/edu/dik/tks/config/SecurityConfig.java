@@ -72,6 +72,9 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/api/games/create").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
                                 .requestMatchers(HttpMethod.GET, "/api/games/{id}").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
                                 .requestMatchers(HttpMethod.PUT, "/api/games").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/games").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.DELETE, "/api/games/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
+
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

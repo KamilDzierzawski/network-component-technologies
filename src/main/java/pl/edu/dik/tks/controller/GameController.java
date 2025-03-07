@@ -11,6 +11,7 @@ import pl.edu.dik.tks.dto.game.CreateGameRequest;
 import pl.edu.dik.tks.dto.game.GameResponse;
 import pl.edu.dik.tks.dto.game.UpdateGameRequest;
 import pl.edu.dik.tks.exception.business.GameNotFoundException;
+import pl.edu.dik.tks.exception.business.GameRentedException;
 import pl.edu.dik.tks.exception.business.IncorrectPlayerNumberException;
 import pl.edu.dik.tks.model.game.Game;
 import pl.edu.dik.tks.service.GameService;
@@ -53,5 +54,11 @@ public class GameController {
         Game game = modelMapper.map(updateGameRequest, Game.class);
         Game updatedGame = gameService.updateGame(game);
         return ResponseEntity.ok(modelMapper.map(updatedGame, GameResponse.class));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBoardGame(@PathVariable ObjectId id) throws GameRentedException {
+        gameService.deleteGameById(id);
+        return ResponseEntity.noContent().build();
     }
 }
