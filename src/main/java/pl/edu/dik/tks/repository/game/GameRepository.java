@@ -7,13 +7,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface GameRepository {
-    Game insert(Game game);
+    Game save(Game game);
 
     Optional<Game> findById(Object id);
 
     List<Game> findAll();
-
-    Game update(Game game);
 
     void deleteById(Object id);
 }

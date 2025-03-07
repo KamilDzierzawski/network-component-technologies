@@ -21,21 +21,13 @@ public class AuthService {
         this.authRepository = authRepository;
     }
 
-    public void register(Account account) throws
+    public Account register(Account account) throws
             DuplicatedKeyException,
             DatabaseException {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setEnable(true);
         account.setRole(Role.CLIENT);
-        try {
-            authRepository.insert(account);
-        } catch (MongoWriteException e) {
-            if (e.getError().getCode() == 11000) {
-                throw new DuplicatedKeyException("Account with this login already exists");
-            } else {
-                throw new DatabaseException("Database error");
-            }
-        }
+        return authRepository.save(account);
     }
 
     public Account me(String login) throws
