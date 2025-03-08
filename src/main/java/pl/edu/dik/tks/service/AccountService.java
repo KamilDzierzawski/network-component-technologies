@@ -1,7 +1,6 @@
 package pl.edu.dik.tks.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.tks.exception.auth.AccountNotFoundException;
@@ -46,7 +45,7 @@ public class AccountService {
         return accountRepository.findByMatchingLogin(regex);
     }
 
-    public Account toggleUserActiveStatus(ObjectId id, boolean isActive) throws AccountNotFoundException {
+    public Account toggleUserActiveStatus(java.util.UUID id, boolean isActive) throws AccountNotFoundException {
         Account account = findAccountById(id);
         account.setEnable(isActive);
         return accountRepository.update(account);

@@ -1,7 +1,6 @@
 package pl.edu.dik.tks.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AccountResponse> findById(@PathVariable ObjectId id) throws AccountNotFoundException {
+    public ResponseEntity<AccountResponse> findById(@PathVariable UUID id) throws AccountNotFoundException {
         Account foundAccount = accountService.findAccountById(id);
         return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(foundAccount, AccountResponse.class));
     }
@@ -54,7 +53,7 @@ public class AccountController {
     }
 
     @PatchMapping("/{id}/toggle-status")
-    public ResponseEntity<AccountResponse> toggleClientActiveStatus(@PathVariable ObjectId id, @RequestParam boolean isActive) throws AccountNotFoundException {
+    public ResponseEntity<AccountResponse> toggleClientActiveStatus(@PathVariable UUID id, @RequestParam boolean isActive) throws AccountNotFoundException {
         Account client = accountService.toggleUserActiveStatus(id, isActive);
         return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(client, AccountResponse.class));
     }

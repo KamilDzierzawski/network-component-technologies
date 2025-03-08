@@ -81,6 +81,16 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/search").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
                                 .requestMatchers(HttpMethod.PATCH, "/api/accounts/{id}/toggle-status").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
 
+                                .requestMatchers(HttpMethod.POST, "/api/rents").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
+                                .requestMatchers(HttpMethod.GET, "/api/rents/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/rents").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/rents/client/").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/rents/end/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
+
+                                .requestMatchers(HttpMethod.GET, "/api/inactive-rents/").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/inactive-rents").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.GET, "/api/inactive-rents/client/").hasAnyRole("CLIENT", "EMPLOYEE")
+
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

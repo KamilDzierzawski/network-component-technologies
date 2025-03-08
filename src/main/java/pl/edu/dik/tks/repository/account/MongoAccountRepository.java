@@ -8,7 +8,6 @@ import com.mongodb.client.model.Filters;
 import lombok.Getter;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 import pl.edu.dik.tks.model.account.Account;
 
 import java.util.List;
@@ -61,30 +60,5 @@ public class MongoAccountRepository implements AccountRepository {
         Bson filter = regex("login", loginSubstring, "i"); // Remove unnecessary and()
         return StreamSupport.stream(collection.find(filter).spliterator(), false)
                 .collect(Collectors.toList());
-    }
-
-
-
-
-    // Atomic increment to mark a client as renting another item
-    // https://medium.com/@codersauthority/handling-race-conditions-and-concurrent-resource-updates-in-node-and-mongodb-by-performing-atomic-9f1a902bd5fa
-    public boolean markAsRented(ClientSession session, ObjectId clientId) {
-        Bson filter = and(eq("_id", clientId.toString()), lt("rental_count", 5)); // Ensure rentalCount < 5
-        Bson update = inc("rental_count", 1); // Increment rental count by 1
-
-        Document updatedClient = getCollection().withDocumentClass(Document.class)
-                .findOneAndUpdate(session, filter, update);
-        return updatedClient != null; // Returns true if update was successful, false if not
-    }
-
-    // Atomic decrement to unmark a client as renting an item
-    // https://medium.com/@codersauthority/handling-race-conditions-and-concurrent-resource-updates-in-node-and-mongodb-by-performing-atomic-9f1a902bd5fa
-    public boolean unmarkAsRented(ClientSession session, ObjectId clientId) {
-        Bson filter = and(eq("_id", clientId.toString()), gt("rental_count", 0)); // Ensure rentalCount > 0
-        Bson update = inc("rental_count", -1); // Decrement rental count by 1
-
-        Document updatedClient = getCollection().withDocumentClass(Document.class)
-                .findOneAndUpdate(session, filter, update);
-        return updatedClient != null; // Returns true if update was successful, false if not
     }
 }

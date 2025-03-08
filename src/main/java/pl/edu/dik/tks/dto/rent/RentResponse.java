@@ -2,7 +2,6 @@ package pl.edu.dik.tks.dto.rent;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
 import java.util.UUID;
@@ -19,6 +18,6 @@ public class RentResponse {
 
     private int rentalPrice;
 
-    private ObjectId gameId;
-    private ObjectId userId;
+    private UUID gameId;
+    private UUID accountId;
 }

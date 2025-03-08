@@ -2,14 +2,13 @@ package pl.edu.dik.tks.dto.game;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import org.bson.types.ObjectId;
 
 import java.util.UUID;
 
 @Data
 public class UpdateGameRequest {
     @NotNull(message = "Id is required")
-    private ObjectId id;
+    private UUID id;
 
     @NotEmpty(message = "Name is required")
     @Size(min = 3, max = 50, message = "Name must be between 3 and 50 characters")

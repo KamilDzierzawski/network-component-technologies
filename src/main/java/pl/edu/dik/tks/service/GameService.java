@@ -1,7 +1,6 @@
 package pl.edu.dik.tks.service;
 
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.tks.exception.business.GameNotFoundException;
@@ -12,6 +11,7 @@ import pl.edu.dik.tks.repository.game.MongoGameRepository;
 import pl.edu.dik.tks.repository.rent.RentRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class GameService {
         return gameRepository.save(game);
     }
 
-    public Game findGameById(ObjectId id) throws GameNotFoundException {
+    public Game findGameById(UUID id) throws GameNotFoundException {
         return gameRepository.findById(id)
                 .orElseThrow(() -> new GameNotFoundException("Game with ID " + id + " not found"));
     }
@@ -50,10 +50,13 @@ public class GameService {
         return gameRepository.update(foundGame);
     }
 
-    public void deleteGameById(ObjectId id) throws GameRentedException {
-        if (rentRepository.isGameRented(id)) {
+    public void deleteGameById(UUID id) throws GameRentedException, GameNotFoundException {
+        Game game = gameRepository.findById(id)
+                .orElseThrow(() -> new GameNotFoundException("Game with ID " + id + " not found"));
+
+        if (game.getRentalStatusCount() != 0) {
             throw new GameRentedException("Game with ID " + id + " is currently rented.");
         }
-        gameRepository.deleteById(id);
+        gameRepository.deleteById(game.getId());
     }
 }

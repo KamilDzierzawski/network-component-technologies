@@ -2,7 +2,6 @@ package pl.edu.dik.tks.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.bson.types.ObjectId;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import pl.edu.dik.tks.model.game.Game;
 import pl.edu.dik.tks.service.GameService;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/games")
@@ -35,7 +35,7 @@ public class GameController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GameResponse> findById(@PathVariable ObjectId id) throws GameNotFoundException {
+    public ResponseEntity<GameResponse> findById(@PathVariable UUID id) throws GameNotFoundException {
         Game foundGame = gameService.findGameById(id);
         return ResponseEntity.ok(modelMapper.map(foundGame, GameResponse.class));
     }
@@ -57,7 +57,7 @@ public class GameController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBoardGame(@PathVariable ObjectId id) throws GameRentedException {
+    public ResponseEntity<Void> deleteBoardGame(@PathVariable UUID id) throws GameRentedException, GameNotFoundException {
         gameService.deleteGameById(id);
         return ResponseEntity.noContent().build();
     }

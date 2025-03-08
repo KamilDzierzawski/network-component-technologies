@@ -12,6 +12,7 @@ import pl.edu.dik.tks.model.account.Account;
 
 import static com.mongodb.client.model.Filters.*;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class AuthRepository {
@@ -26,6 +27,7 @@ public class AuthRepository {
 
     public Account save(Account object) throws DuplicatedKeyException {
         try {
+            object.setId(UUID.randomUUID());
             collection.insertOne(object);
             return object;
         } catch (MongoWriteException e) {

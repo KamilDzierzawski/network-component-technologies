@@ -31,6 +31,7 @@ public class MongoGameRepository implements GameRepository {
     }
 
     public Game save(Game game) {
+        game.setId(UUID.randomUUID());
         collection.insertOne(game);
         return game;
     }
@@ -55,28 +56,5 @@ public class MongoGameRepository implements GameRepository {
     public void deleteById(Object id) {
         Bson filter = eq("_id", id);
         collection.deleteOne(filter);
-    }
-
-    // Atomic increment to mark as rented
-    // https://medium.com/@codersauthority/handling-race-conditions-and-concurrent-resource-updates-in-node-and-mongodb-by-performing-atomic-9f1a902bd5fa
-    public boolean markAsRented(ClientSession session, UUID gameId) {
-        Bson filter = and(eq("_id", gameId.toString()), eq("rental_status_count", 0)); // Ensure game is not rented
-        Bson update = inc("rental_status_count", 1); // Increment rental status count by 1
-
-        Document updatedGame = collection.withDocumentClass(Document.class)
-                .findOneAndUpdate(session, filter, update);
-
-        return updatedGame != null; // Returns true if update was successful, false if not
-    }
-
-    // Atomic decrement to unmark as rented
-    // https://medium.com/@codersauthority/handling-race-conditions-and-concurrent-resource-updates-in-node-and-mongodb-by-performing-atomic-9f1a902bd5fa
-    public boolean unmarkAsRented(ClientSession session, UUID gameId) {
-        Bson filter = and(eq("_id", gameId.toString()), eq("rental_status_count", 1)); // Ensure game is rented by one renter
-        Bson update = inc("rental_status_count", -1); // Decrement rental status count by 1
-
-        Document updatedGame = collection.withDocumentClass(Document.class)
-                .findOneAndUpdate(session, filter, update);
-        return updatedGame != null; // Returns true if update was successful, false if not
     }
 }

@@ -2,9 +2,12 @@ package pl.edu.dik.tks;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import pl.edu.dik.tks.exception.auth.DuplicatedKeyException;
 
 @SpringBootApplication
+@EnableWebSecurity
 public class TksApplication {
 
 	public static void main(String[] args) throws DuplicatedKeyException{
