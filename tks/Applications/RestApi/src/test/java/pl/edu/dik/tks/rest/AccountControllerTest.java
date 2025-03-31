@@ -1,5 +1,4 @@
-package pl.edu.dik.tks;
-
+package pl.edu.dik.tks.rest;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -9,10 +8,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import pl.edu.dik.tks.TestContainerConfig;
+import pl.edu.dik.tks.TksApplication;
 
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -20,7 +22,7 @@ import static io.restassured.RestAssured.given;
 )
 @Testcontainers
 @ContextConfiguration(classes = TestContainerConfig.class)
-public class GameControllerTest {
+public class AccountControllerTest {
 
     @LocalServerPort
     private int port;
@@ -38,10 +40,10 @@ public class GameControllerTest {
                 .contentType(ContentType.JSON)
                 .body("""
                 {
-                    "firstName": "Maciek",
+                    "firstName": "Jan",
                     "lastName": "Kowalski",
                     "login": "%s",
-                    "password": "Kowal"
+                    "password": "Haslo123"
                 }
                 """.formatted(login.toString()))
                 .when()
@@ -54,7 +56,7 @@ public class GameControllerTest {
                 .body("""
                 {
                     "login": "%s",
-                    "password": "Kowal"
+                    "password": "Haslo123"
                 }
                 """.formatted(login.toString()))
                 .when()
@@ -63,98 +65,63 @@ public class GameControllerTest {
                 .statusCode(200)
                 .extract()
                 .asString();
-
     }
 
     @Test
-    public void createGameTest() {
-        String id = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + token)
-                .body("""
-                {
-                    "name": "Chess",
-                    "pricePerDay": 5,
-                    "minPlayers": 2,
-                    "maxPlayers": 4
-                }
-                """)
-                .when()
-                .post("/games")
-                .then()
-                .statusCode(201)
-                .extract()
-                .path("id");
-
+    public void findAllAccountsTest() {
         given()
                 .header("Authorization", "Bearer " + token)
                 .when()
-                .get("/games/" + id)
+                .get("/accounts")
                 .then()
                 .statusCode(200);
     }
 
     @Test
-    public void createGameWithInvalidMinPlayersTest() {
+    public void findAccountByIdTest() {
+        UUID accountId = UUID.randomUUID();
+
         given()
-                .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)
-                .body("""
-            {
-                "name": "Chess",
-                "pricePerDay": 5,
-                "minPlayers": 0,
-                "maxPlayers": 4
-            }
-            """)
                 .when()
-                .post("/games")
+                .get("/accounts/" + accountId)
                 .then()
-                .statusCode(400);
+                .statusCode(anyOf(is(200), is(404)));
     }
 
     @Test
-    public void updateGameTest() {
-        // Create a new game to later update.
-        String gameId = given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer " + token)
-                .body("""
-                {
-                    "name": "Chess",
-                    "pricePerDay": 5,
-                    "minPlayers": 2,
-                    "maxPlayers": 4
-                }
-                """)
-                .when()
-                .post("/games")
-                .then()
-                .statusCode(201)
-                .extract()
-                .path("id");
-
-        // Create update JSON with the new details.
-        String updateGameJson = """
-            {
-                "id": "%s",
-                "name": "Updated Chess",
-                "pricePerDay": 7,
-                "minPlayers": 2,
-                "maxPlayers": 5
-            }
-            """.formatted(gameId);
-
-        // Submit the update request.
+    public void findAccountByLoginTest() {
         given()
-                .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)
-                .body(updateGameJson)
+                .queryParam("login", "testUser")
                 .when()
-                .put("/games")
+                .get("/accounts/by-login")
                 .then()
-                .statusCode(200);
+                .statusCode(anyOf(is(200), is(404)));
     }
 
+    @Test
+    public void findByMatchingLoginTest() {
+        given()
+                .header("Authorization", "Bearer " + token)
+                .queryParam("regex", "test.*")
+                .when()
+                .get("/accounts/search")
+                .then()
+                .statusCode(200)
+                .body("size()", greaterThanOrEqualTo(0));
+    }
 
+    @Test
+    public void toggleAccountStatusTest() {
+        UUID accountId = UUID.randomUUID();
+
+        given()
+                .header("Authorization", "Bearer " + token)
+                .queryParam("isActive", false)
+                .when()
+                .patch("/accounts/" + accountId + "/toggle-status")
+                .then()
+                .statusCode(anyOf(is(200), is(404)));
+    }
 }

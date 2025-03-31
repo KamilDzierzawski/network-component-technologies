@@ -1,4 +1,4 @@
-package pl.edu.dik.tks;
+package pl.edu.dik.tks.rest;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import pl.edu.dik.tks.TestContainerConfig;
+import pl.edu.dik.tks.TksApplication;
 
 import java.util.UUID;
 

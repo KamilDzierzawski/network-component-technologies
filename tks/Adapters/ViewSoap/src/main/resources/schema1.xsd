@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0">
+    
+  <xs:element name="CreateGameRequest" type="createGameRequest"/>
+    
+  <xs:element name="GameResponse" type="gameResponse"/>
+    
+  <xs:element name="UpdateGameRequest" type="updateGameRequest"/>
+    
+  <xs:complexType name="createGameRequest">
+        
+    <xs:sequence>
+            
+      <xs:element name="name" type="xs:string"/>
+            
+      <xs:element name="pricePerDay" type="xs:int"/>
+            
+      <xs:element name="minPlayers" type="xs:int"/>
+            
+      <xs:element name="maxPlayers" type="xs:int"/>
+          
+    </xs:sequence>
+      
+  </xs:complexType>
+    
+  <xs:complexType name="gameResponse">
+        
+    <xs:sequence>
+            
+      <xs:element name="id" type="xs:string"/>
+            
+      <xs:element name="name" type="xs:string"/>
+            
+      <xs:element name="pricePerDay" type="xs:int"/>
+            
+      <xs:element name="minPlayers" type="xs:int"/>
+            
+      <xs:element name="maxPlayers" type="xs:int"/>
+            
+      <xs:element name="rentalStatusCount" type="xs:int"/>
+          
+    </xs:sequence>
+      
+  </xs:complexType>
+    
+  <xs:complexType name="updateGameRequest">
+        
+    <xs:sequence>
+            
+      <xs:element name="id" type="xs:string"/>
+            
+      <xs:element name="name" type="xs:string"/>
+            
+      <xs:element name="pricePerDay" type="xs:int"/>
+          
+    </xs:sequence>
+      
+  </xs:complexType>
+  
+</xs:schema>

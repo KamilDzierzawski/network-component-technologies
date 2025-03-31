@@ -19,3 +19,5 @@ tks/ApplicationPorts/target
 tks/ApplicationPorts/.idea
 
 tks/Utils/target
+
+tks/Adapters/ViewSoap/target
