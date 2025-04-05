@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-@XmlRootElement(name = "UpdateGameRequest")
+@XmlRootElement(name = "updateGameRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"id", "name", "pricePerDay"})
 public class UpdateGameRequest {

@@ -5,7 +5,7 @@ import jakarta.xml.bind.annotation.*;
 import lombok.Data;
 
 @Data
-@XmlRootElement(name = "CreateGameRequest")
+@XmlRootElement(name = "createGameRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"name", "pricePerDay", "minPlayers", "maxPlayers"})
 public class CreateGameRequest {

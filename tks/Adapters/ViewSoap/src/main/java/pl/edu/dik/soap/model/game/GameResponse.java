@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-@XmlRootElement(name = "GameResponse")
+@XmlRootElement(name = "gameResponse")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(propOrder = {"id", "name", "pricePerDay", "minPlayers", "maxPlayers", "rentalStatusCount"})
 public class GameResponse {

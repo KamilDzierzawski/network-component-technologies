@@ -18,9 +18,9 @@ public class GameEndpoint {
 
     private final GameService gameService;
     private final ModelMapper modelMapper;
+    private static final String NAMESPACE_URI = "http://viewsoap.adapters.soap/games";
 
-
-    @PayloadRoot(namespace = "http://viewsoap.adapters.tks/games", localPart = "createGameRequest")
+    @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createGameRequest")
     @ResponsePayload
     public GameResponse createGame(@RequestPayload CreateGameRequest createGameRequest) throws IncorrectPlayerNumberException {
 
