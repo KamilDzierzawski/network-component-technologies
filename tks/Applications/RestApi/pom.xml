@@ -12,14 +12,6 @@
     <groupId>pl.edu.dik.restapi</groupId>
     <artifactId>RestApi</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>pl.edu.dik.adapters.viewrest</groupId>
-            <artifactId>ViewRest</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>

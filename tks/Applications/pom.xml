@@ -19,6 +19,19 @@
         <module>RestApi</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>pl.edu.dik.adapters.viewrest</groupId>
+            <artifactId>ViewRest</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.edu.dik.adapters.viewsoap</groupId>
+            <artifactId>ViewSoap</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
