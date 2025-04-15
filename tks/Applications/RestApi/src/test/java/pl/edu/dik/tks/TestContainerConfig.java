@@ -20,6 +20,7 @@ public class TestContainerConfig {
         mongoContainer.start();
 
         try {
+
             org.testcontainers.containers.Container.ExecResult initResult = mongoContainer.execInContainer(
                     "mongosh", "--eval",
                     "rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'localhost:" + MONGO_PORT + "'}]})"
@@ -28,7 +29,7 @@ public class TestContainerConfig {
             System.out.println("Replica set initialization: " + initResult.getStdout());
 
             // Wait for replica set to initialize
-//            Thread.sleep(5000);
+            Thread.sleep(5000);
 
             // Set Spring property that matches your MongoConfig class
             System.setProperty("mongodb.connection.uri",
