@@ -8,11 +8,11 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {
 		"pl.edu.dik"
 })
-public class TksApplication {
+public class UserServiceApplication {
 
 	public static void main(String[] args) {
 //		try {
-			SpringApplication.run(TksApplication.class, args);
+			SpringApplication.run(UserServiceApplication.class, args);
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}

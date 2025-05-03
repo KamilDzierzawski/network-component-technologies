@@ -19,7 +19,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <skip>false</skip>
-                    <mainClass>pl.edu.dik.tks.TksApplication</mainClass>
+                    <mainClass>pl.edu.dik.tks.RentServiceApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

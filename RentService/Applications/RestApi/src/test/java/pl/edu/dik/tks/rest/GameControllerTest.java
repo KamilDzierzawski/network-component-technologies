@@ -10,7 +10,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.edu.dik.tks.TestContainerConfig;
-import pl.edu.dik.tks.TksApplication;
+import pl.edu.dik.tks.RentServiceApplication;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ import static io.restassured.RestAssured.given;
 
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = TksApplication.class
+        classes = RentServiceApplication.class
 )
 @Testcontainers
 @ContextConfiguration(classes = TestContainerConfig.class)
