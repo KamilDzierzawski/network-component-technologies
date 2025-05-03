@@ -1,7 +1,7 @@
 .idea
 
-tks/Adapters/RepositoriesAdapters/target
-tks/Adapters/RepositoriesAdapters/.idea
+tks/Adapters/MongoDBAdapters/target
+tks/Adapters/MongoDBAdapters/.idea
 
 tks/Adapters/ViewRest/target
 tks/Adapters/ViewRest/.idea
