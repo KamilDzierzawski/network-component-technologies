@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
+import pl.edu.dik.domain.model.account.Account;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -18,10 +19,10 @@ public class TokenService {
 
     private final JwtEncoder jwtEncoder;
 
-    public String generateToken(Authentication authentication) {
+    public String generateToken(Account account) {
         Instant now = Instant.now();
 
-        String scope = authentication.getAuthorities()
+        String scope = account.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
@@ -31,7 +32,7 @@ public class TokenService {
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(40, ChronoUnit.MINUTES))
-                .subject(authentication.getName())
+                .subject(account.getLogin())
                 .claim("scope", scope)
                 .claim("SSBD", "ready")  // ;)
                 .build();

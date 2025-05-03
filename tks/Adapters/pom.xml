@@ -14,7 +14,7 @@
     <version>1.0.0</version>
 
     <modules>
-        <module>RepositoriesAdapters</module>
+        <module>MongoDBAdapters</module>
         <module>ViewRest</module>
         <module>ViewSoap</module>
     </modules>

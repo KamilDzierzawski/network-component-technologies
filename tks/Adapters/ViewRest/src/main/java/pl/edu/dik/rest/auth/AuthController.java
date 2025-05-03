@@ -36,8 +36,8 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getLogin(), loginRequest.getPassword()));
-
-        String token = tokenService.generateToken(authentication);
+        Account account = (Account) authentication.getPrincipal();
+        String token = tokenService.generateToken(account);
         return ResponseEntity.ok(token);
     }
 

@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>pl.edu.dik.adapters.repositories</groupId>
-            <artifactId>RepositoriesAdapters</artifactId>
+            <artifactId>MongoDBAdapters</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>
