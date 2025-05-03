@@ -52,14 +52,6 @@ public class MongoAuthRepository implements AuthRepository {
     }
 
 
-    @Override
-    public boolean update(AccountEnt account) {
-        Object id = account.getId();
-        Bson filter = Filters.eq("_id", id.toString());
-        return collection.replaceOne(filter, account).wasAcknowledged();
-    }
-
-
     private void ensureUniqueIndex() {
         IndexOptions options = new IndexOptions().unique(true);
         collection.createIndex(Indexes.ascending("login"), options);

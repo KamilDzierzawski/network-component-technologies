@@ -40,23 +40,4 @@ public class AuthController {
         String token = tokenService.generateToken(account);
         return ResponseEntity.ok(token);
     }
-
-    @GetMapping("/me")
-    public ResponseEntity<AccountResponse> me() throws
-            AccountNotFoundException {
-        return ResponseEntity.ok(
-                modelMapper.map(
-                        authService.me(
-                                SecurityContextHolder.getContext().getAuthentication().getName()),
-                        AccountResponse.class));
-
-    }
-
-    @PatchMapping("/reset-password")
-    public ResponseEntity<ResetPasswordResponse> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws
-            AccountNotFoundException,
-            IncorrectPasswordException {
-        String message = authService.resetPassword(SecurityContextHolder.getContext().getAuthentication().getName(), resetPasswordRequest.getCurrentPassword(), resetPasswordRequest.getNewPassword());
-        return ResponseEntity.ok(new ResetPasswordResponse(message));
-    }
 }

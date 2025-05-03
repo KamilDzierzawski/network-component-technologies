@@ -81,15 +81,4 @@ class AuthRepositoryAdapterMockTest {
 
         verify(authRepository, times(1)).findByLogin("login");
     }
-
-    @Test
-    void updateTest() {
-        when(authRepository.update(accountEnt)).thenReturn(true);
-
-        boolean result = authRepositoryAdapter.update(account);
-
-        assertTrue(result);
-
-        verify(authRepository, times(1)).update(accountEnt);
-    }
 }

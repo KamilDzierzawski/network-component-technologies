@@ -10,13 +10,12 @@ import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports.exception.business.DuplicatedKeyException;
 import pl.edu.dik.ports.infrastructure.auth.CreateAuthPort;
 import pl.edu.dik.ports.infrastructure.auth.ReadAuthPort;
-import pl.edu.dik.ports.infrastructure.auth.UpdateAuthPort;
 
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
-public class AuthRepositoryAdapter implements CreateAuthPort, ReadAuthPort, UpdateAuthPort {
+public class AuthRepositoryAdapter implements CreateAuthPort, ReadAuthPort {
 
     private final AuthRepository authRepository;
     private final ModelMapper modelMapper;
@@ -33,10 +32,5 @@ public class AuthRepositoryAdapter implements CreateAuthPort, ReadAuthPort, Upda
     @Override
     public Optional<Account> findByLogin(String login) {
         return Optional.of(modelMapper.map(authRepository.findByLogin(login), Account.class));
-    }
-
-    @Override
-    public boolean update(Account account) {
-        return authRepository.update(modelMapper.map(account, AccountEnt.class));
     }
 }

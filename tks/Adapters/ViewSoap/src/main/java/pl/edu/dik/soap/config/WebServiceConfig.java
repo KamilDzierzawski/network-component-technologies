@@ -15,7 +15,6 @@ import org.springframework.xml.xsd.XsdSchema;
 @EnableWs
 @Configuration
 public class WebServiceConfig extends WsConfigurerAdapter {
-
     @Bean
     public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext applicationContext) {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
@@ -26,12 +25,12 @@ public class WebServiceConfig extends WsConfigurerAdapter {
 
     @Bean(name = "games")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema gamesSchema) {
-        DefaultWsdl11Definition wsdl11Definition = new DefaultWsdl11Definition();
-        wsdl11Definition.setPortTypeName("GamesPort");
-        wsdl11Definition.setLocationUri("/ws");
-        wsdl11Definition.setTargetNamespace("http://viewsoap.adapters.soap/games");
-        wsdl11Definition.setSchema(gamesSchema);
-        return wsdl11Definition;
+        DefaultWsdl11Definition definition = new DefaultWsdl11Definition();
+        definition.setPortTypeName("GamesPort");
+        definition.setLocationUri("/ws");
+        definition.setTargetNamespace("http://viewsoap.adapters.soap/games");
+        definition.setSchema(gamesSchema);
+        return definition;
     }
 
     @Bean

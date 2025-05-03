@@ -10,6 +10,4 @@ public interface AuthRepository {
     AccountEnt save(AccountEnt object) throws DuplicatedKeyRepositoryException;
 
     Optional<AccountEnt> findByLogin(String login);
-
-    boolean update(AccountEnt account);
 }

@@ -6,10 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.domain.model.account.Role;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
+import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 
@@ -19,6 +21,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,12 +35,15 @@ class AccountServiceMockTest {
 
     private AccountService accountService;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     private UUID accountId;
     private Account account;
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountServiceImpl(readAccountPort, updateAccountPort);
+        accountService = new AccountServiceImpl(readAccountPort, updateAccountPort, passwordEncoder);
 
         accountId = UUID.randomUUID();
         account = new Account(accountId, "firstname", "lastName", Role.CLIENT, true, "login", "password", 0);
@@ -134,5 +141,57 @@ class AccountServiceMockTest {
 
         verify(readAccountPort, times(1)).findById(accountId);
         verify(updateAccountPort, never()).update(any(Account.class));
+    }
+
+    @SneakyThrows
+    @Test
+    void me() {
+        Account account = new Account();
+        when(readAccountPort.findByLogin("userLogin")).thenReturn(Optional.of(account));
+
+        Account result = accountService.me("userLogin");
+
+        assertEquals(account, result);
+        verify(readAccountPort, times(1)).findByLogin("userLogin");
+    }
+
+    @Test
+    void meAccountNotFound() {
+        when(readAccountPort.findByLogin("nonexistentUser")).thenReturn(Optional.empty());
+
+        assertThrows(AccountNotFoundException.class, () -> accountService.me("nonexistentUser"));
+        verify(readAccountPort, times(1)).findByLogin("nonexistentUser");
+    }
+
+    @SneakyThrows
+    @Test
+    void resetPassword() {
+        Account account = new Account();
+        account.setPassword("encodedOldPassword");
+        when(readAccountPort.findByLogin("userLogin")).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches("oldPassword", "encodedOldPassword")).thenReturn(true);
+        when(passwordEncoder.encode("newPassword")).thenReturn("encodedNewPassword");
+
+        String result = accountService.resetPassword("userLogin", "oldPassword", "newPassword");
+
+        assertEquals("Password reset successfully.", result);
+        verify(updateAccountPort, times(1)).update(account);
+    }
+
+    @Test
+    void resetPasswordAccountNotFound() {
+        when(readAccountPort.findByLogin("nonexistentUser")).thenReturn(Optional.empty());
+
+        assertThrows(AccountNotFoundException.class, () -> accountService.resetPassword("nonexistentUser", "oldPassword", "newPassword"));
+    }
+
+    @Test
+    void resetPasswordIncorrectOldPassword() {
+        Account account = new Account();
+        account.setPassword("encodedOldPassword");
+        when(readAccountPort.findByLogin("userLogin")).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches("wrongOldPassword", "encodedOldPassword")).thenReturn(false);
+
+        assertThrows(IncorrectPasswordException.class, () -> accountService.resetPassword("userLogin", "wrongOldPassword", "newPassword"));
     }
 }

@@ -8,8 +8,4 @@ import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
 public interface AuthService {
 
     Account register(Account account) throws DuplicatedKeyException;
-
-    Account me(String login) throws AccountNotFoundException;
-
-    String resetPassword(String login, String oldPassword, String newPassword) throws AccountNotFoundException, IncorrectPasswordException;
 }

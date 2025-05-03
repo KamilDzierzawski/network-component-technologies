@@ -1,9 +1,11 @@
 package pl.edu.dik.application.services.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
+import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 import pl.edu.dik.ports._interface.AccountService;
@@ -17,6 +19,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final ReadAccountPort readAccountPort;
     private final UpdateAccountPort updateAccountPort;
+    private final PasswordEncoder passwordEncoder;
 
     public Account findAccountById(UUID id) throws AccountNotFoundException {
         return readAccountPort.findById(id).orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " not found"));
@@ -53,5 +56,26 @@ public class AccountServiceImpl implements AccountService {
 
         account.setEnable(isActive);
         return updateAccountPort.update(account);
+    }
+
+    @Override
+    public Account me(String login) throws
+            AccountNotFoundException {
+        return readAccountPort.findByLogin(login)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+    }
+
+
+    @Override
+    public String resetPassword(String login, String oldPassword, String newPassword) throws
+            AccountNotFoundException, IncorrectPasswordException {
+        Account account = readAccountPort.findByLogin(login)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+        if (!passwordEncoder.matches(oldPassword, account.getPassword())) {
+            throw new IncorrectPasswordException("Incorrect password");
+        }
+        account.setPassword(passwordEncoder.encode(newPassword));
+        updateAccountPort.update(account);
+        return "Password reset successfully.";
     }
 }
