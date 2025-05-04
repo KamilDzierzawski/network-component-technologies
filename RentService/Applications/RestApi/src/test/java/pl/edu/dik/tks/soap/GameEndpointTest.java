@@ -1,26 +1,8 @@
 //package pl.edu.dik.tks.soap;
 //
-//import io.restassured.RestAssured;
-//import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
-//import org.modelmapper.ModelMapper;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.web.server.LocalServerPort;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.test.context.ContextConfiguration;
-//import org.testcontainers.junit.jupiter.Testcontainers;
-//import pl.edu.dik.adapters.exception.DuplicatedKeyRepositoryException;
-//import pl.edu.dik.adapters.model.account.AccountEnt;
-//import pl.edu.dik.adapters.model.account.RoleEnt;
-//import pl.edu.dik.adapters.repository.auth.AuthRepository;
-//import pl.edu.dik.domain.model.account.Account;
-//import pl.edu.dik.rest.auth.TokenService;
-//import pl.edu.dik.tks.TksApplication;
-//import pl.edu.dik.tks.TestContainerConfig;
-//import pl.edu.dik.soap.config.WebServiceConfig;
+//import pl.edu.dik.tks.TestBaseConfiguration;
 //
-//import java.util.UUID;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 //
@@ -29,41 +11,7 @@
 //import static org.hamcrest.Matchers.containsString;
 //import static org.junit.jupiter.api.Assertions.assertNotNull;
 //
-//@SpringBootTest(
-//        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-//        classes = TksApplication.class
-//)
-//@Testcontainers
-//@ContextConfiguration(classes = {TestContainerConfig.class})
-//public class GameEndpointTest {
-//
-//    @LocalServerPort
-//    private int port;
-//
-//    @Autowired
-//    private AuthRepository authRepository;
-//    @Autowired
-//    private TokenService tokenService;
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-//
-//    private final ModelMapper modelMapper = new ModelMapper();
-//
-//    private String token;
-//
-//    @BeforeEach
-//    public void setup() {
-//        // Set the dynamic port for REST-assured
-//        RestAssured.port = port;
-//
-//        AccountEnt account = new AccountEnt(null, "Maciek", "Kowalski", RoleEnt.EMPLOYEE, true, UUID.randomUUID().toString(), "P@ssw0rd", 0);
-//        try {
-//            authRepository.save(account);
-//        } catch (DuplicatedKeyRepositoryException e) {
-//            throw new RuntimeException(e);
-//        }
-//        token = tokenService.generateToken(modelMapper.map(account, Account.class));
-//    }
+//public class GameEndpointTest extends TestBaseConfiguration {
 //
 //    private String extractGameId(String response) {
 //        Pattern pattern = Pattern.compile("<ns2:id>(.*?)</ns2:id>");
@@ -75,6 +23,7 @@
 //    }
 //
 //    private String createGame(String name, int pricePerDay, int minPlayers, int maxPlayers) {
+//
 //        String soapRequest = String.format("""
 //            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 //                              xmlns:gm="http://viewsoap.adapters.soap/games">

@@ -92,7 +92,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/inactive-rents").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/inactive-rents/client/").hasAnyRole("CLIENT", "EMPLOYEE")
 
-                                .requestMatchers("/ws/**").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> {
