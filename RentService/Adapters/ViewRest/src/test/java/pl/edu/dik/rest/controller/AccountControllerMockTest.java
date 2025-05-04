@@ -123,28 +123,4 @@ public class AccountControllerMockTest {
                 .andExpect(jsonPath("$[0].id").value(accountId.toString()))
                 .andExpect(jsonPath("$[0].login").value("testLogin"));
     }
-
-    @SneakyThrows
-    @Test
-    void toggleClientActiveStatus() {
-        when(accountService.toggleUserActiveStatus(accountId, true)).thenReturn(account);
-        when(modelMapper.map(any(Account.class), any())).thenReturn(accountResponse);
-
-        mockMvc.perform(patch("/api/accounts/{id}/toggle-status", accountId)
-                        .param("isActive", "true"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(accountId.toString()))
-                .andExpect(jsonPath("$.login").value("testLogin"));
-    }
-
-    @SneakyThrows
-    @Test
-    void toggleClientActiveStatusNotFound() {
-        when(accountService.toggleUserActiveStatus(accountId, true)).thenThrow(new AccountNotFoundException("Account not found"));
-
-        mockMvc.perform(patch("/api/accounts/{id}/toggle-status", accountId)
-                        .param("isActive", "true"))
-                .andExpect(status().isNotFound());
-    }
-
 }

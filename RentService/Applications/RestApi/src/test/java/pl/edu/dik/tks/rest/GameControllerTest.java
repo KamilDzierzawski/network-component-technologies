@@ -5,10 +5,20 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import pl.edu.dik.adapters.exception.DuplicatedKeyRepositoryException;
+import pl.edu.dik.adapters.model.account.AccountEnt;
+import pl.edu.dik.adapters.model.account.RoleEnt;
+import pl.edu.dik.adapters.repository.auth.AuthRepository;
+import pl.edu.dik.domain.model.account.Account;
+import pl.edu.dik.rest.config.SecurityConfig;
+import pl.edu.dik.rest.config.TokenService;
+import pl.edu.dik.tks.TestBaseConfiguration;
 import pl.edu.dik.tks.TestContainerConfig;
 import pl.edu.dik.tks.RentServiceApplication;
 
@@ -16,57 +26,8 @@ import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = RentServiceApplication.class
-)
-@Testcontainers
-@ContextConfiguration(classes = TestContainerConfig.class)
-public class GameControllerTest {
 
-    @LocalServerPort
-    private int port;
-
-    private String token;
-
-    @BeforeEach
-    public void setUp() {
-        RestAssured.port = port;
-        RestAssured.basePath = "/api";
-
-        UUID login = UUID.randomUUID();
-
-        given()
-                .contentType(ContentType.JSON)
-                .body("""
-                {
-                    "firstName": "Maciek",
-                    "lastName": "Kowalski",
-                    "login": "%s",
-                    "password": "Kowal"
-                }
-                """.formatted(login.toString()))
-                .when()
-                .post("/auth/register")
-                .then()
-                .statusCode(201);
-
-        token = given()
-                .contentType(ContentType.JSON)
-                .body("""
-                {
-                    "login": "%s",
-                    "password": "Kowal"
-                }
-                """.formatted(login.toString()))
-                .when()
-                .post("/auth/login")
-                .then()
-                .statusCode(200)
-                .extract()
-                .asString();
-
-    }
+public class GameControllerTest extends TestBaseConfiguration {
 
     @Test
     public void createGameTest() {

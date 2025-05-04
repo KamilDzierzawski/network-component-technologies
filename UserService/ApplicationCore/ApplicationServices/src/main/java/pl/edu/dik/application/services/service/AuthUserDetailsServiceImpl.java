@@ -15,7 +15,6 @@ public class AuthUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-
         return readAuthPort.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Account not found"));
 

@@ -12,6 +12,7 @@ import pl.edu.dik.domain.model.account.Role;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
 import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
+import pl.edu.dik.ports.infrastructure.CreateAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 
@@ -32,6 +33,8 @@ class AccountServiceMockTest {
     private ReadAccountPort readAccountPort;
     @Mock
     private UpdateAccountPort updateAccountPort;
+    @Mock
+    private CreateAccountPort createAccountPort;
 
     private AccountService accountService;
 
@@ -43,7 +46,7 @@ class AccountServiceMockTest {
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountServiceImpl(readAccountPort, updateAccountPort, passwordEncoder);
+        accountService = new AccountServiceImpl(createAccountPort, readAccountPort, updateAccountPort, passwordEncoder);
 
         accountId = UUID.randomUUID();
         account = new Account(accountId, "firstname", "lastName", Role.CLIENT, true, "login", "password", 0);

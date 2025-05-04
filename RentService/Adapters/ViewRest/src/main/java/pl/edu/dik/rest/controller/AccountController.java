@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
+import pl.edu.dik.ports.exception.business.DuplicatedKeyException;
 import pl.edu.dik.rest.model.account.AccountResponse;
 import pl.edu.dik.rest.model.account.CreateAccountRequest;
 
@@ -25,8 +26,8 @@ public class AccountController {
 
 
     @PostMapping
-    public ResponseEntity<AccountResponse> create(@RequestBody CreateAccountRequest account) {
-        Account createdAccount = accountService.createAccount(account);
+    public ResponseEntity<AccountResponse> create(@RequestBody CreateAccountRequest account) throws DuplicatedKeyException {
+        Account createdAccount = accountService.createAccount(modelMapper.map(account, Account.class));
         return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(createdAccount, AccountResponse.class));
     }
 

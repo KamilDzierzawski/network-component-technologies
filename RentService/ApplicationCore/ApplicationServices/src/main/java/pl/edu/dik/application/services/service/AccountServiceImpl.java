@@ -5,7 +5,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
+import pl.edu.dik.ports.exception.business.DuplicatedKeyException;
 import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
+import pl.edu.dik.ports.infrastructure.CreateAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 import pl.edu.dik.ports._interface.AccountService;
@@ -17,9 +19,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
+    private final CreateAccountPort createAccountPort;
     private final ReadAccountPort readAccountPort;
     private final UpdateAccountPort updateAccountPort;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public Account createAccount(Account account) throws
+            DuplicatedKeyException {
+        return createAccountPort.save(account);
+    }
 
     public Account findAccountById(UUID id) throws AccountNotFoundException {
         return readAccountPort.findById(id).orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " not found"));

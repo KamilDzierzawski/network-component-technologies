@@ -9,65 +9,19 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import pl.edu.dik.tks.RentServiceApplication;
+import pl.edu.dik.tks.TestBaseConfiguration;
 import pl.edu.dik.tks.TestContainerConfig;
 
 import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = RentServiceApplication.class
-)
-@Testcontainers
-@ContextConfiguration(classes = TestContainerConfig.class)
-public class RentControllerTest {
+public class RentControllerTest extends TestBaseConfiguration {
 
-    @LocalServerPort
-    private int port;
+    @Test
+    void rentGameTest() {
 
-    private String token;
-    private UUID login;
-    private String gameId;
-
-    @BeforeEach
-    public void setUp() {
-        RestAssured.port = port;
-        RestAssured.basePath = "/api";
-
-        login = UUID.randomUUID();
-
-        given()
-                .contentType(ContentType.JSON)
-                .body("""
-                {
-                    "firstName": "Maciek",
-                    "lastName": "Kowalski",
-                    "login": "%s",
-                    "password": "Kowal"
-                }
-                """.formatted(login.toString()))
-                .when()
-                .post("/auth/register")
-                .then()
-                .statusCode(201);
-
-        token = given()
-                .contentType(ContentType.JSON)
-                .body("""
-                {
-                    "login": "%s",
-                    "password": "Kowal"
-                }
-                """.formatted(login.toString()))
-                .when()
-                .post("/auth/login")
-                .then()
-                .statusCode(200)
-                .extract()
-                .asString();
-
-        gameId = given()
+        String gameId = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)
                 .body("""
@@ -84,10 +38,6 @@ public class RentControllerTest {
                 .statusCode(201)
                 .extract()
                 .path("id");
-    }
-
-    @Test
-    void rentGameTest() {
 
         given()
                 .contentType(ContentType.JSON)
@@ -108,6 +58,25 @@ public class RentControllerTest {
 
     @Test
     void rentGameInvalidDateTest() {
+
+        String gameId = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + token)
+                .body("""
+                {
+                    "name": "Chess",
+                    "pricePerDay": 5,
+                    "minPlayers": 2,
+                    "maxPlayers": 4
+                }
+                """)
+                .when()
+                .post("/games")
+                .then()
+                .statusCode(201)
+                .extract()
+                .path("id");
+
         given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)
@@ -127,6 +96,25 @@ public class RentControllerTest {
 
     @Test
     void endRentTest() {
+
+        String gameId = given()
+                .contentType(ContentType.JSON)
+                .header("Authorization", "Bearer " + token)
+                .body("""
+                {
+                    "name": "Chess",
+                    "pricePerDay": 5,
+                    "minPlayers": 2,
+                    "maxPlayers": 4
+                }
+                """)
+                .when()
+                .post("/games")
+                .then()
+                .statusCode(201)
+                .extract()
+                .path("id");
+
         String id = given()
                 .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer " + token)

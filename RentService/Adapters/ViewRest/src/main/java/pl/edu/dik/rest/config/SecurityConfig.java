@@ -69,13 +69,14 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()
                                 .requestMatchers(HttpMethod.PATCH, "/api/auth/reset-password").authenticated()
 
-                                .requestMatchers(HttpMethod.POST, "/api/games/create").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
+                                .requestMatchers(HttpMethod.POST, "/api/games").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
                                 .requestMatchers(HttpMethod.GET, "/api/games/{id}").hasAnyRole("CLIENT", "EMPLOYEE") // TODO: remove client role
                                 .requestMatchers(HttpMethod.PUT, "/api/games").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/games").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.DELETE, "/api/games/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
 
                                 .requestMatchers(HttpMethod.GET, "/api/accounts").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
+                                .requestMatchers(HttpMethod.POST, "/api/accounts").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/{id}").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/by-login").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/search").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
@@ -85,15 +86,13 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/rents/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/rents").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/rents/client/").hasAnyRole("CLIENT", "EMPLOYEE")
-                                .requestMatchers(HttpMethod.GET, "/api/rents/end/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
+                                .requestMatchers(HttpMethod.POST, "/api/rents/end/{id}").hasAnyRole("CLIENT", "EMPLOYEE")
 
                                 .requestMatchers(HttpMethod.GET, "/api/inactive-rents/").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/inactive-rents").hasAnyRole("CLIENT", "EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/api/inactive-rents/client/").hasAnyRole("CLIENT", "EMPLOYEE")
 
                                 .requestMatchers("/ws/**").permitAll()
-
-                                .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> {

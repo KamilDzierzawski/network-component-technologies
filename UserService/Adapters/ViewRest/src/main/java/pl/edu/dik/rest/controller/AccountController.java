@@ -47,7 +47,7 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(foundAccount, AccountResponse.class));
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     public ResponseEntity<List<AccountResponse>> findByMatchingLogin(@RequestParam String regex) {
         List<Account> accounts = accountService.findByMatchingLogin(regex);
         List<AccountResponse> responses = accounts.stream()
