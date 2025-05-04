@@ -16,28 +16,18 @@ public class Account implements UserDetails {
 
     private UUID id;
 
-    private String firstName;
-
-    private String lastName;
-
-    private Role role;
-
-    private boolean isEnable;
-
     private String login;
-
-    private String password;
 
     private int rentalCount;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "ROLE_" + role.toString());
+        return List.of(() -> "ROLE_CLIENT");
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return "";
     }
 
     @Override
@@ -47,7 +37,7 @@ public class Account implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isEnable;
+        return true;
     }
 
 }

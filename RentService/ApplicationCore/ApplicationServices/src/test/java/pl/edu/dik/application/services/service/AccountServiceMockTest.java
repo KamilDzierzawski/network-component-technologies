@@ -7,7 +7,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.edu.dik.domain.model.account.Account;
-import pl.edu.dik.domain.model.account.Role;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
 import pl.edu.dik.ports.infrastructure.account.CreateAccountPort;
@@ -42,7 +41,7 @@ class AccountServiceMockTest {
         accountService = new AccountServiceImpl(createAccountPort, readAccountPort);
 
         accountId = UUID.randomUUID();
-        account = new Account(accountId, "firstname", "lastName", Role.CLIENT, true, "login", "password", 0);
+        account = new Account(accountId, "login", 0);
     }
 
     @SneakyThrows

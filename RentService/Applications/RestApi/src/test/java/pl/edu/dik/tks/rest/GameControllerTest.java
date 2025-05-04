@@ -1,28 +1,9 @@
 package pl.edu.dik.tks.rest;
 
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.ContextConfiguration;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.edu.dik.adapters.exception.DuplicatedKeyRepositoryException;
-import pl.edu.dik.adapters.model.account.AccountEnt;
-import pl.edu.dik.adapters.model.account.RoleEnt;
-import pl.edu.dik.adapters.repository.auth.AuthRepository;
-import pl.edu.dik.domain.model.account.Account;
-import pl.edu.dik.rest.config.SecurityConfig;
-import pl.edu.dik.rest.config.TokenService;
 import pl.edu.dik.tks.TestBaseConfiguration;
-import pl.edu.dik.tks.TestContainerConfig;
-import pl.edu.dik.tks.RentServiceApplication;
-
-import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 

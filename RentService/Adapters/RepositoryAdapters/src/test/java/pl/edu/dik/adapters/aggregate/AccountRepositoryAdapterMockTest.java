@@ -7,10 +7,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import pl.edu.dik.adapters.model.account.AccountEnt;
-import pl.edu.dik.adapters.model.account.RoleEnt;
 import pl.edu.dik.adapters.repository.account.AccountRepository;
 import pl.edu.dik.domain.model.account.Account;
-import pl.edu.dik.domain.model.account.Role;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +31,8 @@ class AccountRepositoryAdapterMockTest {
     void setUp() {
         accountRepositoryAdapter = new AccountRepositoryAdapter(accountRepository, new ModelMapper());
         UUID accountId = UUID.randomUUID();
-        accountEnt = new AccountEnt(accountId, "Test", "User", RoleEnt.CLIENT, true, "login", "password", 0);
-        account = new Account(accountId, "Test", "User", Role.CLIENT, true, "login", "password", 0);
+        accountEnt = new AccountEnt(accountId, "login", 0);
+        account = new Account(accountId, "login", 0);
     }
 
 
