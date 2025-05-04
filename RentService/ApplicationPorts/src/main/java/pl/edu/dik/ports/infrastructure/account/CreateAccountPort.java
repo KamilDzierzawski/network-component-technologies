@@ -1,4 +1,4 @@
-package pl.edu.dik.ports.infrastructure;
+package pl.edu.dik.ports.infrastructure.account;
 
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports.exception.business.DuplicatedKeyException;

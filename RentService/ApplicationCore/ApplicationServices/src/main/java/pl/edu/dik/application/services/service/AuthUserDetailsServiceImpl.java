@@ -5,18 +5,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.edu.dik.ports.infrastructure.auth.ReadAuthPort;
+import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 
 @Service
 @RequiredArgsConstructor
 public class AuthUserDetailsServiceImpl implements UserDetailsService {
 
-    private final ReadAuthPort readAuthPort;
+    private final ReadAccountPort readAccountPort;
 
     @Override
     public UserDetails loadUserByUsername(String username) {
 
-        return readAuthPort.findByLogin(username)
+        return readAccountPort.findByLogin(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Account not found"));
 
     }

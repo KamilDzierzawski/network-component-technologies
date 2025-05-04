@@ -37,18 +37,6 @@ class AccountRepositoryAdapterMockTest {
         account = new Account(accountId, "Test", "User", Role.CLIENT, true, "login", "password", 0);
     }
 
-    @Test
-    void update() {
-        when(accountRepository.update(accountEnt)).thenReturn(accountEnt);
-
-        Account result = accountRepositoryAdapter.update(account);
-
-        assertThat(result)
-                .usingRecursiveComparison()
-                .isEqualTo(account);
-
-        verify(accountRepository, times(1)).update(accountEnt);
-    }
 
     @Test
     void findByIdTest() {

@@ -53,9 +53,6 @@ public class AccountControllerMockTest {
         accountResponse = new AccountResponse();
         accountResponse.setId(accountId.toString());
         accountResponse.setLogin("testLogin");
-        accountResponse.setEnable(true);
-        accountResponse.setFirstName("Test");
-        accountResponse.setLastName("User");
     }
 
     @SneakyThrows

@@ -17,15 +17,9 @@ public interface AccountService {
 
     List<Account> findAllAccounts();
 
-    Account updateAccount(Account account) throws AccountNotFoundException;
-
     Account findByLogin(String login) throws AccountNotFoundException;
 
     List<Account> findByMatchingLogin(String regex);
 
-    Account toggleUserActiveStatus(UUID id, boolean isActive) throws AccountNotFoundException;
-
     Account me(String login) throws AccountNotFoundException;
-
-    String resetPassword(String login, String oldPassword, String newPassword) throws AccountNotFoundException, IncorrectPasswordException;
 }

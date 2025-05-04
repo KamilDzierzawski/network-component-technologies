@@ -6,15 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.domain.model.account.Role;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
-import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
-import pl.edu.dik.ports.infrastructure.CreateAccountPort;
+import pl.edu.dik.ports.infrastructure.account.CreateAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
-import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -32,21 +30,16 @@ class AccountServiceMockTest {
     @Mock
     private ReadAccountPort readAccountPort;
     @Mock
-    private UpdateAccountPort updateAccountPort;
-    @Mock
     private CreateAccountPort createAccountPort;
 
     private AccountService accountService;
-
-    @Mock
-    private PasswordEncoder passwordEncoder;
 
     private UUID accountId;
     private Account account;
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountServiceImpl(createAccountPort, readAccountPort, updateAccountPort, passwordEncoder);
+        accountService = new AccountServiceImpl(createAccountPort, readAccountPort);
 
         accountId = UUID.randomUUID();
         account = new Account(accountId, "firstname", "lastName", Role.CLIENT, true, "login", "password", 0);
@@ -73,20 +66,6 @@ class AccountServiceMockTest {
         verify(readAccountPort, times(1)).findById(accountId);
     }
 
-    @SneakyThrows
-    @Test
-    void updateAccountTest() {
-        when(readAccountPort.findById(accountId)).thenReturn(Optional.ofNullable(account));
-        when(updateAccountPort.update(account)).thenReturn(account);
-
-        Account result = accountService.updateAccount(account);
-
-        assertThat(result)
-                .isEqualTo(account);
-
-        verify(readAccountPort, times(1)).findById(accountId);
-        verify(updateAccountPort, times(1)).update(account);
-    }
 
     @SneakyThrows
     @Test
@@ -121,30 +100,6 @@ class AccountServiceMockTest {
         verify(readAccountPort, times(1)).findByMatchingLogin("login");
     }
 
-    @SneakyThrows
-    @Test
-    void toggleUserActiveStatusTest() {
-        when(readAccountPort.findById(accountId)).thenReturn(Optional.ofNullable(account));
-        when(updateAccountPort.update(account)).thenReturn(account);
-
-        Account result = accountService.toggleUserActiveStatus(accountId, false);
-
-        assertThat(result.isEnable()).isFalse();
-
-        verify(readAccountPort, times(1)).findById(accountId);
-        verify(updateAccountPort, times(1)).update(account);
-    }
-
-    @Test
-    void toggleUserActiveStatusNotFoundTest() {
-        when(readAccountPort.findById(accountId)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> accountService.toggleUserActiveStatus(accountId, false))
-                .isInstanceOf(AccountNotFoundException.class);
-
-        verify(readAccountPort, times(1)).findById(accountId);
-        verify(updateAccountPort, never()).update(any(Account.class));
-    }
 
     @SneakyThrows
     @Test
@@ -164,37 +119,5 @@ class AccountServiceMockTest {
 
         assertThrows(AccountNotFoundException.class, () -> accountService.me("nonexistentUser"));
         verify(readAccountPort, times(1)).findByLogin("nonexistentUser");
-    }
-
-    @SneakyThrows
-    @Test
-    void resetPassword() {
-        Account account = new Account();
-        account.setPassword("encodedOldPassword");
-        when(readAccountPort.findByLogin("userLogin")).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches("oldPassword", "encodedOldPassword")).thenReturn(true);
-        when(passwordEncoder.encode("newPassword")).thenReturn("encodedNewPassword");
-
-        String result = accountService.resetPassword("userLogin", "oldPassword", "newPassword");
-
-        assertEquals("Password reset successfully.", result);
-        verify(updateAccountPort, times(1)).update(account);
-    }
-
-    @Test
-    void resetPasswordAccountNotFound() {
-        when(readAccountPort.findByLogin("nonexistentUser")).thenReturn(Optional.empty());
-
-        assertThrows(AccountNotFoundException.class, () -> accountService.resetPassword("nonexistentUser", "oldPassword", "newPassword"));
-    }
-
-    @Test
-    void resetPasswordIncorrectOldPassword() {
-        Account account = new Account();
-        account.setPassword("encodedOldPassword");
-        when(readAccountPort.findByLogin("userLogin")).thenReturn(Optional.of(account));
-        when(passwordEncoder.matches("wrongOldPassword", "encodedOldPassword")).thenReturn(false);
-
-        assertThrows(IncorrectPasswordException.class, () -> accountService.resetPassword("userLogin", "wrongOldPassword", "newPassword"));
     }
 }
