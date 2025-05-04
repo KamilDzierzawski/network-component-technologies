@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
-import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
-import pl.edu.dik.rest.model.auth.AccountResponse;
-import pl.edu.dik.rest.model.auth.ResetPasswordRequest;
-import pl.edu.dik.rest.model.auth.ResetPasswordResponse;
+import pl.edu.dik.rest.model.account.AccountResponse;
+import pl.edu.dik.rest.model.account.CreateAccountRequest;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +23,12 @@ public class AccountController {
     private final ModelMapper modelMapper;
     private final AccountService accountService;
 
+
+    @PostMapping
+    public ResponseEntity<AccountResponse> create(@RequestBody CreateAccountRequest account) {
+        Account createdAccount = accountService.createAccount(account);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(createdAccount, AccountResponse.class));
+    }
 
     @GetMapping
     public ResponseEntity<List<AccountResponse>> findAll() {
@@ -56,12 +60,6 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.OK).body(responses);
     }
 
-    @PatchMapping("/{id}/toggle-status")
-    public ResponseEntity<AccountResponse> toggleClientActiveStatus(@PathVariable UUID id, @RequestParam boolean isActive) throws AccountNotFoundException {
-        Account client = accountService.toggleUserActiveStatus(id, isActive);
-        return ResponseEntity.status(HttpStatus.OK).body(modelMapper.map(client, AccountResponse.class));
-    }
-
     @GetMapping("/me")
     public ResponseEntity<AccountResponse> me() throws
             AccountNotFoundException {
@@ -71,13 +69,5 @@ public class AccountController {
                                 SecurityContextHolder.getContext().getAuthentication().getName()),
                         AccountResponse.class));
 
-    }
-
-    @PatchMapping("/reset-password")
-    public ResponseEntity<ResetPasswordResponse> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws
-            AccountNotFoundException,
-            IncorrectPasswordException {
-        String message = accountService.resetPassword(SecurityContextHolder.getContext().getAuthentication().getName(), resetPasswordRequest.getCurrentPassword(), resetPasswordRequest.getNewPassword());
-        return ResponseEntity.ok(new ResetPasswordResponse(message));
     }
 }

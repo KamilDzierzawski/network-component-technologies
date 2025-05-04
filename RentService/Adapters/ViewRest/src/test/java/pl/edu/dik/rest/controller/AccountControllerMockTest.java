@@ -14,7 +14,7 @@ import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
 import pl.edu.dik.rest.exception.AppExceptionHandler;
-import pl.edu.dik.rest.model.auth.AccountResponse;
+import pl.edu.dik.rest.model.account.AccountResponse;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

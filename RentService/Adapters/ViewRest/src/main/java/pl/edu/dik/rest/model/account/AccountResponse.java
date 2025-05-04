@@ -1,4 +1,4 @@
-package pl.edu.dik.rest.model.auth;
+package pl.edu.dik.rest.model.account;
 
 import lombok.*;
 
