@@ -39,7 +39,8 @@ public class TestBaseConfiguration {
     public void setUp() {
         RestAssured.port = port;
         RestAssured.basePath = "/api";
-        AccountEnt account = new AccountEnt(null, UUID.randomUUID().toString(), 0);
+        String username = UUID.randomUUID().toString();
+        AccountEnt account = new AccountEnt(null, username, 0);
         try {
             accountRepository.save(account);
         } catch (DuplicatedKeyRepositoryException e) {
