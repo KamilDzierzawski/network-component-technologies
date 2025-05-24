@@ -12,6 +12,7 @@ import pl.edu.dik.domain.model.account.Role;
 import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
 import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
+import pl.edu.dik.ports.infrastructure.account.CreateAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 
@@ -32,6 +33,8 @@ class AccountServiceMockTest {
     private ReadAccountPort readAccountPort;
     @Mock
     private UpdateAccountPort updateAccountPort;
+    @Mock
+    private CreateAccountPort createAccountPort;
 
     private AccountService accountService;
 
@@ -43,10 +46,27 @@ class AccountServiceMockTest {
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountServiceImpl(readAccountPort, updateAccountPort, passwordEncoder);
+        accountService = new AccountServiceImpl(readAccountPort, updateAccountPort, passwordEncoder, createAccountPort);
 
         accountId = UUID.randomUUID();
         account = new Account(accountId, "firstname", "lastName", Role.CLIENT, true, "login", "password", 0);
+    }
+
+    @SneakyThrows
+    @Test
+    void register() {
+        Account account = new Account();
+        account.setPassword("plainPassword");
+        when(passwordEncoder.encode("plainPassword")).thenReturn("encodedPassword");
+        when(createAccountPort.save(any(Account.class))).thenReturn(account);
+
+        Account result = accountService.create(account);
+
+        assertThat(result)
+                .extracting(Account::getPassword, Account::isEnable, Account::getRole)
+                .containsExactly("encodedPassword", true, Role.CLIENT);
+
+        verify(createAccountPort, times(1)).save(any(Account.class));
     }
 
     @SneakyThrows

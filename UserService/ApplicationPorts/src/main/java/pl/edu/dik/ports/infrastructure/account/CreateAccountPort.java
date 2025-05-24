@@ -1,9 +1,8 @@
-package pl.edu.dik.ports.infrastructure.auth;
+package pl.edu.dik.ports.infrastructure.account;
 
 import pl.edu.dik.domain.model.account.Account;
 import pl.edu.dik.ports.exception.business.DuplicatedKeyException;
 
-public interface CreateAuthPort {
-
+public interface CreateAccountPort {
     Account save(Account object) throws DuplicatedKeyException;
 }

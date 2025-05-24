@@ -1,11 +1,15 @@
 package pl.edu.dik.adapters.repository.account;
 
+import com.mongodb.MongoWriteException;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.IndexOptions;
+import com.mongodb.client.model.Indexes;
 import lombok.Getter;
 import org.bson.conversions.Bson;
 import org.springframework.stereotype.Repository;
+import pl.edu.dik.adapters.exception.DuplicatedKeyRepositoryException;
 import pl.edu.dik.adapters.model.account.AccountEnt;
 
 
@@ -26,6 +30,27 @@ public class MongoAccountRepository implements AccountRepository {
 
     public MongoAccountRepository(MongoDatabase mongoDatabase) {
         this.collection = mongoDatabase.getCollection("account", AccountEnt.class);
+        ensureUniqueIndex();
+    }
+
+    @Override
+    public AccountEnt save(AccountEnt object) throws DuplicatedKeyRepositoryException {
+        try {
+            object.setId(UUID.randomUUID());
+            collection.insertOne(object);
+            return object;
+        } catch (MongoWriteException e) {
+            if (e.getError().getCode() == 11000) {
+                throw new DuplicatedKeyRepositoryException("Account with this login already exists");
+            } else {
+                throw e;
+            }
+        }
+    }
+
+    private void ensureUniqueIndex() {
+        IndexOptions options = new IndexOptions().unique(true);
+        collection.createIndex(Indexes.ascending("login"), options);
     }
 
     @Override

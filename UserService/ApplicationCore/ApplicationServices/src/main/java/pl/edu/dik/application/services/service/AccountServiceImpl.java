@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.edu.dik.domain.model.account.Account;
+import pl.edu.dik.domain.model.account.Role;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
+import pl.edu.dik.ports.exception.business.DuplicatedKeyException;
 import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
+import pl.edu.dik.ports.infrastructure.account.CreateAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 import pl.edu.dik.ports._interface.AccountService;
@@ -20,6 +23,7 @@ public class AccountServiceImpl implements AccountService {
     private final ReadAccountPort readAccountPort;
     private final UpdateAccountPort updateAccountPort;
     private final PasswordEncoder passwordEncoder;
+    private final CreateAccountPort createAccountPort;
 
     public Account findAccountById(UUID id) throws AccountNotFoundException {
         return readAccountPort.findById(id).orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " not found"));
@@ -77,5 +81,14 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(passwordEncoder.encode(newPassword));
         updateAccountPort.update(account);
         return "Password reset successfully.";
+    }
+
+    @Override
+    public Account create(Account account) throws
+            DuplicatedKeyException {
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setEnable(true);
+        account.setRole(Role.CLIENT);
+        return createAccountPort.save(account);
     }
 }

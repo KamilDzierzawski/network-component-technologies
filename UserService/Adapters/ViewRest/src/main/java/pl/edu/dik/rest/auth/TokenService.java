@@ -1,8 +1,6 @@
 package pl.edu.dik.rest.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -11,7 +9,6 @@ import pl.edu.dik.domain.model.account.Account;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +19,9 @@ public class TokenService {
     public String generateToken(Account account) {
         Instant now = Instant.now();
 
-        String scope = account.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
+        String scope = "ROLE_" + account.getRole().toString();
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
-
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(40, ChronoUnit.MINUTES))

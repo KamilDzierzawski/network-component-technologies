@@ -1,6 +1,7 @@
 package pl.edu.dik.adapters.repository.account;
 
 
+import pl.edu.dik.adapters.exception.DuplicatedKeyRepositoryException;
 import pl.edu.dik.adapters.model.account.AccountEnt;
 
 import java.util.List;
@@ -8,6 +9,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface AccountRepository {
+
+    AccountEnt save(AccountEnt object) throws DuplicatedKeyRepositoryException;
 
     Optional<AccountEnt> findById(UUID id);
 
