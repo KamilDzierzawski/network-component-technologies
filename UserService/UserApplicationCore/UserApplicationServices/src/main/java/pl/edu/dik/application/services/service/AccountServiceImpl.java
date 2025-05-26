@@ -91,7 +91,7 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setEnable(true);
         account.setRole(Role.CLIENT);
-        createAccountPort.save(account);
+        account = createAccountPort.save(account);
         createAccountEventPort.publish(account);
         return account;
     }
