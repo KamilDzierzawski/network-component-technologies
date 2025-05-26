@@ -16,6 +16,7 @@
     <modules>
         <module>UserRepositoryAdapters</module>
         <module>UserViewRest</module>
+        <module>UserRabbitMQAdapters</module>
     </modules>
 
     <packaging>pom</packaging>

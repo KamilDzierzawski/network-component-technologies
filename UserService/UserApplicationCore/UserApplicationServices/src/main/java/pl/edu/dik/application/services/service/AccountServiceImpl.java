@@ -12,6 +12,7 @@ import pl.edu.dik.ports.infrastructure.account.CreateAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 import pl.edu.dik.ports._interface.AccountService;
+import pl.edu.dik.ports.infrastructure.accountevent.CreateAccountEventPort;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +25,7 @@ public class AccountServiceImpl implements AccountService {
     private final UpdateAccountPort updateAccountPort;
     private final PasswordEncoder passwordEncoder;
     private final CreateAccountPort createAccountPort;
+    private final CreateAccountEventPort createAccountEventPort;
 
     public Account findAccountById(UUID id) throws AccountNotFoundException {
         return readAccountPort.findById(id).orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " not found"));
@@ -89,6 +91,8 @@ public class AccountServiceImpl implements AccountService {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setEnable(true);
         account.setRole(Role.CLIENT);
-        return createAccountPort.save(account);
+        createAccountPort.save(account);
+        createAccountEventPort.publish(account);
+        return account;
     }
 }

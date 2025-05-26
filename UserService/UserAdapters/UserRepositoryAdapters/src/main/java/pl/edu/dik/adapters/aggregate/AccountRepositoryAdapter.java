@@ -2,6 +2,7 @@ package pl.edu.dik.adapters.aggregate;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import pl.edu.dik.adapters.exception.DuplicatedKeyRepositoryException;
 import pl.edu.dik.adapters.model.account.AccountEnt;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 
 
 @Component
@@ -51,6 +53,7 @@ public class AccountRepositoryAdapter implements ReadAccountPort, UpdateAccountP
         return accountRepository.findByMatchingLogin(loginSubstring).stream().map(gameAccount -> modelMapper.map(gameAccount, Account.class)).collect(Collectors.toList());
     }
 
+    @Order(1)
     @Override
     public Account save(Account object) throws DuplicatedKeyException {
         try {
