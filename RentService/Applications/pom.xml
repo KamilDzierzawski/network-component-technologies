@@ -30,6 +30,11 @@
             <artifactId>ViewSoap</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>pl.edu.dik.adapters.rabbitmq</groupId>
+            <artifactId>RabbitMQAdapters</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <properties>

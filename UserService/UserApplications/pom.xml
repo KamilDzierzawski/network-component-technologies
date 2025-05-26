@@ -25,6 +25,11 @@
             <artifactId>UserViewRest</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>pl.edu.dik.domain.model</groupId>
+            <artifactId>UserDomainModel</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <properties>

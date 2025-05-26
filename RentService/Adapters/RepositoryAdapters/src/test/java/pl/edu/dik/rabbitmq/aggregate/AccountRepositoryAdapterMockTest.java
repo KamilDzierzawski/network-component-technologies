@@ -1,0 +1,81 @@
+package pl.edu.dik.rabbitmq.aggregate;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import pl.edu.dik.rabbitmq.model.account.AccountEnt;
+import pl.edu.dik.rabbitmq.repository.account.AccountRepository;
+import pl.edu.dik.domain.model.account.Account;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class AccountRepositoryAdapterMockTest {
+
+    @Mock
+    private AccountRepository accountRepository;
+    private AccountRepositoryAdapter accountRepositoryAdapter;
+
+    private AccountEnt accountEnt;
+    private Account account;
+
+    @BeforeEach
+    void setUp() {
+        accountRepositoryAdapter = new AccountRepositoryAdapter(accountRepository, new ModelMapper());
+        UUID accountId = UUID.randomUUID();
+        accountEnt = new AccountEnt(accountId, "login", 0);
+        account = new Account(accountId, "login", 0);
+    }
+
+
+    @Test
+    void findByIdTest() {
+        when(accountRepository.findById(account.getId())).thenReturn(Optional.ofNullable(accountEnt));
+
+        Optional<Account> result = accountRepositoryAdapter.findById(account.getId());
+
+        assertThat(result)
+                .isPresent()
+                .get()
+                .usingRecursiveComparison()
+                .isEqualTo(account);
+
+        verify(accountRepository, times(1)).findById(account.getId());
+    }
+
+    @Test
+    void findByLogin() {
+        when(accountRepository.findByLogin(account.getLogin())).thenReturn(Optional.ofNullable(accountEnt));
+
+        Optional<Account> result = accountRepositoryAdapter.findByLogin(account.getLogin());
+
+        assertThat(result)
+                .isPresent()
+                .get()
+                .usingRecursiveComparison()
+                .isEqualTo(account);
+
+        verify(accountRepository, times(1)).findByLogin(account.getLogin());
+    }
+
+    @Test
+    void findByMatchingLogin() {
+        when(accountRepository.findByMatchingLogin(account.getLogin())).thenReturn(List.of(accountEnt));
+
+        var result = accountRepositoryAdapter.findByMatchingLogin(account.getLogin());
+
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(List.of(account));
+
+        verify(accountRepository, times(1)).findByMatchingLogin(account.getLogin());
+    }
+}

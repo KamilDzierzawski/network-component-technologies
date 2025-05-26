@@ -17,6 +17,7 @@
         <module>RepositoryAdapters</module>
         <module>ViewRest</module>
         <module>ViewSoap</module>
+        <module>RabbitMQAdapters</module>
     </modules>
 
     <packaging>pom</packaging>
