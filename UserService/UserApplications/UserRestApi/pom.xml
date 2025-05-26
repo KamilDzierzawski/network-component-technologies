@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.edu.dik.applications</groupId>
-        <artifactId>Applications</artifactId>
+        <artifactId>UserApplications</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <groupId>pl.edu.dik.restapi</groupId>
-    <artifactId>RestApi</artifactId>
+    <artifactId>UserRestApi</artifactId>
 
     <build>
         <plugins>

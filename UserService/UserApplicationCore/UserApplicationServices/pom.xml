@@ -4,38 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>pl.edu.dik.adapters</groupId>
-        <artifactId>Adapters</artifactId>
+        <groupId>pl.edu.dik.applicationcore</groupId>
+        <artifactId>UserApplicationCore</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <groupId>pl.edu.dik.adapters.repositories</groupId>
-    <artifactId>RepositoryAdapters</artifactId>
-    <version>1.0.0</version>
-
+    <groupId>pl.edu.dik.application.services</groupId>
+    <artifactId>UserApplicationServices</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>pl.edu.dik.applicationports</groupId>
-            <artifactId>ApplicationPorts</artifactId>
+            <artifactId>UserApplicationPorts</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>pl.edu.dik.utils</groupId>
-            <artifactId>Utils</artifactId>
+            <groupId>pl.edu.dik.adapters.repositories</groupId>
+            <artifactId>UserRepositoryAdapters</artifactId>
             <version>1.0.0</version>
-        </dependency>
-
-        <!--        MongoDB -->
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>5.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
     </dependencies>
 

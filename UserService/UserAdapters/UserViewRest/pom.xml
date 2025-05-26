@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>pl.edu.dik.adapters</groupId>
-        <artifactId>Adapters</artifactId>
+        <artifactId>UserAdapters</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <groupId>pl.edu.dik.adapters.viewrest</groupId>
-    <artifactId>ViewRest</artifactId>
+    <artifactId>UserViewRest</artifactId>
     <version>1.0.0</version>
 
     <properties>
@@ -22,17 +22,17 @@
     <dependencies>
         <dependency>
             <groupId>pl.edu.dik.applicationports</groupId>
-            <artifactId>ApplicationPorts</artifactId>
+            <artifactId>UserApplicationPorts</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>pl.edu.dik.utils</groupId>
-            <artifactId>Utils</artifactId>
+            <artifactId>UserUtils</artifactId>
             <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>pl.edu.dik.application.services</groupId>
-            <artifactId>ApplicationServices</artifactId>
+            <artifactId>UserApplicationServices</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

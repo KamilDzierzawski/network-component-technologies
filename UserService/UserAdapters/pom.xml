@@ -9,16 +9,16 @@
         <version>1.0.0</version>
     </parent>
 
-    <groupId>pl.edu.dik.applicationports</groupId>
-    <artifactId>ApplicationPorts</artifactId>
+    <groupId>pl.edu.dik.adapters</groupId>
+    <artifactId>UserAdapters</artifactId>
+    <version>1.0.0</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>pl.edu.dik.domain.model</groupId>
-            <artifactId>DomainModel</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>UserRepositoryAdapters</module>
+        <module>UserViewRest</module>
+    </modules>
+
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

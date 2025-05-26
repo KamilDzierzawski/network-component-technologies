@@ -4,14 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>pl.edu.dik</groupId>
-        <artifactId>UserService</artifactId>
+        <groupId>pl.edu.dik.applicationcore</groupId>
+        <artifactId>UserApplicationCore</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <groupId>pl.edu.dik.utils</groupId>
-    <artifactId>Utils</artifactId>
-    <version>1.0.0</version>
+    <groupId>pl.edu.dik.domain.model</groupId>
+    <artifactId>UserDomainModel</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>

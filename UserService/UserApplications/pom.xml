@@ -10,19 +10,19 @@
     </parent>
 
     <groupId>pl.edu.dik.applications</groupId>
-    <artifactId>Applications</artifactId>
+    <artifactId>UserApplications</artifactId>
     <version>1.0.0</version>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>RestApi</module>
+        <module>UserRestApi</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>pl.edu.dik.adapters.viewrest</groupId>
-            <artifactId>ViewRest</artifactId>
+            <artifactId>UserViewRest</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

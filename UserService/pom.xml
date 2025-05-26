@@ -18,11 +18,11 @@
 	<description>Network component technologies</description>
 
 	<modules>
-		<module>Adapters</module>
-		<module>ApplicationPorts</module>
-		<module>ApplicationCore</module>
-		<module>Applications</module>
-		<module>Utils</module>
+		<module>UserAdapters</module>
+		<module>UserApplicationPorts</module>
+		<module>UserApplicationCore</module>
+		<module>UserApplications</module>
+		<module>UserUtils</module>
 	</modules>
 
 	<properties>
