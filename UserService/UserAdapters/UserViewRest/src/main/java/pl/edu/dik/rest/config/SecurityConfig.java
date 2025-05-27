@@ -74,7 +74,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/accounts/search").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
                                 .requestMatchers(HttpMethod.PATCH, "/api/accounts/{id}/toggle-status").hasAnyRole("CLIENT", "EMPLOYEE", "ADMIN") // todo: same
 
-                                .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> {

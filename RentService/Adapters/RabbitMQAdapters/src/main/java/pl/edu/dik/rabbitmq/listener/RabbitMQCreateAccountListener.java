@@ -25,6 +25,7 @@ public class RabbitMQCreateAccountListener implements CreateAccountListener {
             log.info("Received event {}", event);
             accountService.createAccount(modelMapper.map(event, Account.class));
         } catch (Exception e) {
+            log.error("Error creating account {}", event);
             throw new AmqpRejectAndDontRequeueException("Failed to process event", e);
         }
     }

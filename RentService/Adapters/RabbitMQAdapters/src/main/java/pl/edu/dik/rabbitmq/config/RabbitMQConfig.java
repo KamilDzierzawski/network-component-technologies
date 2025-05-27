@@ -1,6 +1,9 @@
 package pl.edu.dik.rabbitmq.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.retry.MessageRecoverer;
+import org.springframework.amqp.rabbit.retry.RepublishMessageRecoverer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,18 +24,11 @@ public class RabbitMQConfig {
     @Value("${rabbitmq.create.client.queue.name}")
     private String createQueueName;
 
-    @Value("${rabbitmq.deadletter.exchange.name}")
-    private String deadLetterExchangeName;
+    @Value("${rabbitmq.delete.client.key}")
+    private String deleteKey;
 
-    @Value("${rabbitmq.deadletter.queue.name}")
-    private String deadLetterQueueName;
-
-    @Bean
-    public Queue clientCreatedQueue() {
-        return QueueBuilder.durable(createQueueName)
-                .withArgument("x-dead-letter-exchange", deadLetterExchangeName)
-                .build();
-    }
+    @Value("${rabbitmq.delete.client.queue.name}")
+    private String deleteQueueName;
 
     @Bean
     public TopicExchange exchange() {
@@ -40,24 +36,28 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding binding(Queue clientCreatedQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(clientCreatedQueue).to(exchange).with(createKey);
-    }
-
-    // Dead-letter exchange and queue
-    @Bean
-    public TopicExchange deadLetterExchange() {
-        return new TopicExchange(deadLetterExchangeName);
+    public Queue clientCreateQueue() {
+        return QueueBuilder.durable(createQueueName).build();
     }
 
     @Bean
-    public Queue deadLetterQueue() {
-        return QueueBuilder.durable(deadLetterQueueName).build();
+    public Queue clientDeleteQueue() {
+        return QueueBuilder.durable(deleteQueueName).build();
     }
 
     @Bean
-    public Binding deadLetterBinding(Queue deadLetterQueue, TopicExchange deadLetterExchange) {
-        return BindingBuilder.bind(deadLetterQueue).to(deadLetterExchange).with("#");
+    public Binding clientCreateBinding() {
+        return BindingBuilder.bind(clientCreateQueue()).to(exchange()).with(createKey);
+    }
+
+    @Bean
+    public Binding clientDeleteBinding() {
+        return BindingBuilder.bind(clientDeleteQueue()).to(exchange()).with(deleteKey);
+    }
+
+    @Bean
+    public MessageRecoverer messageRecoverer(RabbitTemplate rabbitTemplate) {
+        return new RepublishMessageRecoverer(rabbitTemplate, exchangeName, deleteKey);
     }
 
     @Bean
