@@ -1,9 +1,6 @@
 package pl.edu.dik.userrabbitmq.config;
 
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.retry.MessageRecoverer;
-import org.springframework.amqp.rabbit.retry.RepublishMessageRecoverer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,11 +51,6 @@ public class RabbitMQConfig {
     @Bean
     public Binding clientDeleteBinding() {
         return BindingBuilder.bind(clientDeleteQueue()).to(exchange()).with(deleteKey);
-    }
-
-    @Bean
-    public MessageRecoverer messageRecoverer(RabbitTemplate rabbitTemplate) {
-        return new RepublishMessageRecoverer(rabbitTemplate, exchangeName, deleteKey);
     }
 
     @Bean

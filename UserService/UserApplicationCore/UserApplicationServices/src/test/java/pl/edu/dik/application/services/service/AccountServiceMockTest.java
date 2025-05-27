@@ -13,6 +13,7 @@ import pl.edu.dik.ports._interface.AccountService;
 import pl.edu.dik.ports.exception.business.AccountNotFoundException;
 import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
 import pl.edu.dik.ports.infrastructure.account.CreateAccountPort;
+import pl.edu.dik.ports.infrastructure.account.DeleteAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 import pl.edu.dik.ports.infrastructure.accountevent.CreateAccountEventPort;
@@ -38,6 +39,8 @@ class AccountServiceMockTest {
     private CreateAccountPort createAccountPort;
     @Mock
     private CreateAccountEventPort createAccountEventPort;
+    @Mock
+    private DeleteAccountPort deleteAccountPort;
 
     private AccountService accountService;
 
@@ -49,7 +52,7 @@ class AccountServiceMockTest {
 
     @BeforeEach
     void setUp() {
-        accountService = new AccountServiceImpl(readAccountPort, updateAccountPort, passwordEncoder, createAccountPort, createAccountEventPort);
+        accountService = new AccountServiceImpl(readAccountPort, updateAccountPort, passwordEncoder, createAccountPort, createAccountEventPort, deleteAccountPort);
 
         accountId = UUID.randomUUID();
         account = new Account(accountId, "firstname", "lastName", Role.CLIENT, true, "login", "password", 0);

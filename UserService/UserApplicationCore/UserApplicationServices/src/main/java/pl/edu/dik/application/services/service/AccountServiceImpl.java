@@ -9,6 +9,7 @@ import pl.edu.dik.ports.exception.business.AccountNotFoundException;
 import pl.edu.dik.ports.exception.business.DuplicatedKeyException;
 import pl.edu.dik.ports.exception.business.IncorrectPasswordException;
 import pl.edu.dik.ports.infrastructure.account.CreateAccountPort;
+import pl.edu.dik.ports.infrastructure.account.DeleteAccountPort;
 import pl.edu.dik.ports.infrastructure.account.ReadAccountPort;
 import pl.edu.dik.ports.infrastructure.account.UpdateAccountPort;
 import pl.edu.dik.ports._interface.AccountService;
@@ -26,6 +27,7 @@ public class AccountServiceImpl implements AccountService {
     private final PasswordEncoder passwordEncoder;
     private final CreateAccountPort createAccountPort;
     private final CreateAccountEventPort createAccountEventPort;
+    private final DeleteAccountPort deleteAccountPort;
 
     public Account findAccountById(UUID id) throws AccountNotFoundException {
         return readAccountPort.findById(id).orElseThrow(() -> new AccountNotFoundException("Account with ID " + id + " not found"));
@@ -94,5 +96,10 @@ public class AccountServiceImpl implements AccountService {
         account = createAccountPort.save(account);
         createAccountEventPort.publish(account);
         return account;
+    }
+
+    @Override
+    public void deleteByLogin(String login) {
+        deleteAccountPort.deleteByLogin(login);
     }
 }

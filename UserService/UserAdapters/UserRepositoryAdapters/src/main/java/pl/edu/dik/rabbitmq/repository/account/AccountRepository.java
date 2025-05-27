@@ -21,5 +21,7 @@ public interface AccountRepository {
     Optional<AccountEnt> findByLogin(String login);
 
     List<AccountEnt> findByMatchingLogin(String loginSubstring);
+
+    void deleteByLogin(String login);
 }
 

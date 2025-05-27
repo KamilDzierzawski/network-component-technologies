@@ -28,4 +28,6 @@ public interface AccountService {
 
     Account create(Account account) throws
             DuplicatedKeyException;
+
+    void deleteByLogin(String login);
 }

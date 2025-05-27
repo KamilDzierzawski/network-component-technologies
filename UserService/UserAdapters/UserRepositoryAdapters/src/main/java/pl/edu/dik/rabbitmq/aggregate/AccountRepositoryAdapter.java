@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import pl.edu.dik.ports.infrastructure.account.DeleteAccountPort;
 import pl.edu.dik.rabbitmq.exception.DuplicatedKeyRepositoryException;
 import pl.edu.dik.rabbitmq.model.account.AccountEnt;
 import pl.edu.dik.rabbitmq.repository.account.AccountRepository;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class AccountRepositoryAdapter implements ReadAccountPort, UpdateAccountPort, CreateAccountPort {
+public class AccountRepositoryAdapter implements ReadAccountPort, UpdateAccountPort, CreateAccountPort, DeleteAccountPort {
 
     private final AccountRepository accountRepository;
     private final ModelMapper modelMapper;
@@ -61,5 +62,10 @@ public class AccountRepositoryAdapter implements ReadAccountPort, UpdateAccountP
         } catch (DuplicatedKeyRepositoryException e) {
             throw new DuplicatedKeyException(e.getMessage());
         }
+    }
+
+    @Override
+    public void deleteByLogin(String login) {
+        accountRepository.deleteByLogin(login);
     }
 }

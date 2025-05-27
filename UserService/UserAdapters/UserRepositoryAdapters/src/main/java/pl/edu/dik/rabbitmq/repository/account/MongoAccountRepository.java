@@ -91,4 +91,15 @@ public class MongoAccountRepository implements AccountRepository {
         return StreamSupport.stream(collection.find(filter).spliterator(), false)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void deleteByLogin(String login) {
+        Bson filter = eq("login", login);
+        long deletedCount = collection.deleteOne(filter).getDeletedCount();
+        if (deletedCount > 0) {
+            log.info("Deleted account with login: {}", login);
+        } else {
+            log.info("No account found with login: {}, but considered deleted.", login);
+        }
+    }
 }
